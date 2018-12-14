@@ -52,10 +52,34 @@
     - my_list[0:1] sẽ bằng [1, 2]
 #### Tuples
 - Sự khác biệt giữa list và tuples là: sau khi khai báo, các phần tử trong list có thể thay đổi, còn trong tuples thì không thể.
-- Giải thích 1 cách rõ ràng hơn: Khi ta khai báo 1 list, thì hệ thống cung cấp bộ nhớ để lưu trữ các phần tử kia một cách rời rạc, bởi vậy nên ta có hàm xóa phần tử của list. ví dụ:
+- Giải thích 1 cách rõ ràng hơn: Khi ta khai báo 1 list, thì hệ thống cung cấp bộ nhớ để lưu trữ các phần tử một cách rời rạc, bởi vậy nên ta có hàm xóa phần tử của list. ví dụ:
 ```
 >>> a = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 >>> del a[-1]
 >>> a
 [0, 1, 2, 3, 4, 5, 6, 7, 8]
+```
+- Còn khi ta khai báo 1 tuples(hoặc string), hệ thống cung cấp bộ nhớ lưu trữ cho các phần tử một cách liên tục, các ô nhớ liền kề nhau, bởi vậy sẽ không có hàm xóa, hay hàm thay đổi gì trong 1 tuples (hay string). Ví dụ:
+```
+my_tuples = (1, 2, 3, 4)
+my_string = "vuvandang"
+```
+- Muốn xóa 1 hay nhiều phần tử ở các biến trên, sẽ phải tạo một biến mới gán cho giá trị mới sau khi thay đổi
+#### Dict
+1. Khai báo:
+```
+>>> my_dict = {}
+>>> another_dict = dict()
+>>> my_other_dict = {"one":1, "two":2, "three":3}
+>>> my_other_dict
+{'three': 3, 'two': 2, 'one': 1}
+>>> my_other_dict["one"]
+1
+>>> my_dict = {"name":"Mike", "address":"123 Happy Way"}
+>>> my_dict["name"]
+'Mike'
+```
+2. Lấy vphần tử đầu tiên
+```
+next(iter(my_other_dict.values()))
 ```
