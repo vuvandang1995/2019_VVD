@@ -75,11 +75,24 @@ my_string = "vuvandang"
 {'three': 3, 'two': 2, 'one': 1}
 >>> my_other_dict["one"]
 1
->>> my_dict = {"name":"Mike", "address":"123 Happy Way"}
->>> my_dict["name"]
-'Mike'
 ```
 2. Lấy vphần tử đầu tiên
 ```
 next(iter(my_other_dict.values()))
+```
+3. Một số cách kiểm tra, tìm kiếm trong dict
+```
+>>> my_dict = {"name":"Mike", "address":"123 Happy Way"}
+>>> my_dict["name"]
+'Mike'
+>>> "name" in my_dict
+True
+>>> "state" in my_dict
+False
+```
+4. List các key, values trong dict
+```
+>>> my_dict.keys()
+dict_keys(['name', 'address'])
+>>> my_dict.values()
 ```
