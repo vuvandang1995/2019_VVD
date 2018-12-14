@@ -53,8 +53,9 @@
 #### Tuples
     - Sự khác biệt giữa list và tuples là: sau khi khai báo, các phần tử trong list có thể thay đổi, còn trong tuples thì không thể.
     - Giải thích 1 cách rõ ràng hơn: Khi ta khai báo 1 list, thì hệ thống cung cấp bộ nhớ để lưu trữ các phần tử kia một cách rời rạc, bởi vậy nên ta có hàm xóa phần tử của list. ví dụ:
-        - ```>>> a = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+```
+>>> a = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 >>> del a[-1]
 >>> a
-[0, 1, 2, 3, 4, 5, 6, 7, 8]```
-
+[0, 1, 2, 3, 4, 5, 6, 7, 8]
+```
