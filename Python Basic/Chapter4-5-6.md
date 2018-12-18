@@ -1,5 +1,5 @@
 #### Chapter4: Conditional statements
-- Các ví dụ hay
+- Các ví dụ:
 ```
 empty_list = []
 empty_tuple = ()
