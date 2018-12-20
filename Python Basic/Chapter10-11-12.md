@@ -31,4 +31,4 @@
 - Trong ví dụ trên, khai báo tham số b = None có nghĩa là nếu gọi tới hàm `keyword_function`,tham số truyền vào hàm có thể có b hoặc không. **lưu ý: các tham số khai báo là None khi định nghĩa hàm, luôn luôn phải nằm ở cuối cùng trong dãy tham số**
 
 - `*args và ** kwargs`
-- Bạn có thể khai báo số lượng tham số truyền vào hàm là bao nhiêu cũng đc. Trong đó, `*args` đươc hiểu là list các tham số truyền vào, `**kwargs` là dict các tham số truyền vào. `args` và `kwargs` là gì không quan trọng, quan trọng là số lượng dấu `*`. 1 dấu `*` là đại diện diện cho list, 2 dấu `*` là đại diện cho dict. **lưu ý là list luôn đứng trước dict, nghĩa là ***
+- Bạn có thể khai báo số lượng tham số truyền vào hàm là bao nhiêu cũng đc. Trong đó, `*args` đươc hiểu là list các tham số truyền vào, `**kwargs` là dict các tham số truyền vào. `args` và `kwargs` là gì không quan trọng, quan trọng là số lượng dấu `*`. 1 dấu `*` là đại diện diện cho list, 2 dấu `*` là đại diện cho dict. **lưu ý là list luôn đứng trước dict, nghĩa là `*args` luôn đứng trước `**k`**
