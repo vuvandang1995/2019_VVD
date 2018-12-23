@@ -41,7 +41,7 @@
 
 <img src="https://i.imgur.com/fGKUgsL.png">
 
-- DNS là một giao thức mở và công khai, bởi thế, sẽ có rất nhiều nguy cơ bị tấn công bởi các hacker. đó là ***DNS spoofing*
+- DNS là một giao thức mở và công khai, bởi thế, sẽ có rất nhiều nguy cơ bị tấn công bởi các hacker. đó là **DNS spoofing**
 - Một giả thiết cho một vụ tấn công giả mạo DNS: Đó là khi một hacker xâm nhập vào DNS server, sửa thông tin địa chỉ IP của domain `xyz.com` thành một địa chỉ IP của 1 web server giả mạo, thì khi người dùng truy cập `xyz.com` sẽ không vào được đúng trang `xyz.com` thật nữa, mà chuyển sang trang giả mạo.
 
 # Packets, router and reliability
