@@ -16,3 +16,9 @@ volumes:
 
 ## WORKDIR là tác dụng gì?
 - Ví dụ dùng lệnh `WORKDIR /home/kvmvdi` trong Dockerfile thì khi ta dùng lệnh `docker exec -it container_name /bin/bash`thì nó sẽ mặc định nhảy vào thư mục `/home/kvmvdi` trong container đó.
+
+### Docker-compose
+- Docker-compose để định nghĩa và chạy nhiều container. Xem ví dụ ở repo `https://github.com/vuvandang1995/Portal_docker`
+- Lệnh `docker-compose build nginx` để build image cho service `nginx`trong file `docker-compose.yml`, nếu không có chữ `nginx`thì lệnh này sẽ build image cho tất cả các service trong `docker-compose.yml`
+- Lệnh `docker-compose up -d`. tùy chọn -d là để chạy container chế độ `daemon`, nghĩa là chạy ngầm. có thể chạy container chỉ định giống như bên trên
+- Ngoài ra còn có `docker-compose stop, start, r`
