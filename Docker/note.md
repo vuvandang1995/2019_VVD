@@ -22,3 +22,9 @@ volumes:
 - Lệnh `docker-compose build nginx` để build image cho service `nginx`trong file `docker-compose.yml`, nếu không có chữ `nginx`thì lệnh này sẽ build image cho tất cả các service trong `docker-compose.yml`
 - Lệnh `docker-compose up -d`. tùy chọn -d là để chạy container chế độ `daemon`, nghĩa là chạy ngầm. có thể chạy container chỉ định giống như bên trên
 - Ngoài ra còn có `docker-compose stop, start, r`
+### Dùng ADD trong Dockerfile
+- khi `ADD` 1 file, thì dùng lệnh như bình thường. ví dụ:
+`ADD requirements.txt /home/kvmvdi`
+- Khi `ADD` 1 thư mục, thì cần tạo tên thư mục ở phía đích. Ví dụ:
+`ADD kvmvdi /home/kvmvdi`
+  - Câu lệnh trên là add toàn bộ nội dung của thư mục `kvmvdi` ở máy host vào thư mục `/home/kvmvdi/` trong container. Điều nhấn mạnh ở đây là cần thêm chữ `kvm` vào sau chữ `home` thì toàn bộ nôi dung từ thư mục `kvmvdi` ở máy host mới xuất hiện ở thư mục `/home/kvmvdi/` trong container.
