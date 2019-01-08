@@ -6,5 +6,5 @@
 - Tôi dịch là: **Kata Containers** là một phương pháp triển khai mới cho các VM siêu nhẹ mà có thể tương thích hoàn hảo với hệ sinh thái Containers. Với **Kata Containers**, các containers sẽ rất nhẹ, nhanh và tương thích với các lớp quản lý containers, bao gồm các công cụ quản lý contarner rất phổ biến như Docker và Kubernet (K8S), hơn nữa các container này có lợi thế bảo mật như các VM.
 - Hình sau mô tả về Container trong Cloud hiện nay và trong Kata Container
 
-<img src="">
+<img src="https://i.imgur.com/KMhDTJP.png">
 
