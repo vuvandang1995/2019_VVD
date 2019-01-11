@@ -188,7 +188,7 @@
     - `--apiserver-advertise-address` là tùy chọn để khai báo địa chỉ node **k8s-master**, ở đây chính là `192.168.40.180`, là địa chỉ chúng ta đã đặt ở bước 3 dùng để truyền thông giữa các node trong cụm cluster (node1: 192.168.40.181, node2: 192.168.40.182)
     - `--pod-network-cidr` là tùy chọn khai báo dải địa chỉ cho `flannet`. `flannet` là công nghệ network cho phép các container ở các host khác nhau giao tiếp với nhau, ở đây là các **pod** ở **k8s-node1** và **k8s-node2**. Nhìn hình sau để hiểu rõ vai trò của `flannet` hơn và đến bước thiết lập Pod network sẽ hiểu hơn:
       
-      - <img src="">
+      - <img src="https://i.imgur.com/FFewZvm.png">
       
     - Sau khi chạy kết quả như sau là thành công: http://paste.openstack.org/raw/720277/ (Nếu chưa đúng thì kiểm tra lại từ đầu nhé
     - Luư ý: Nếu gặp thông báo lỗi [ERROR Swap]: running with swap on is not supported. Please disable swap khi thực hiện kubeadm init thì cần thực hiện lệnh swapoff -a. Sau đó thực hiện lại lệnh ở trên.
