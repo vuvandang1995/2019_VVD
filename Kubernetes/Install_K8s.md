@@ -299,13 +299,55 @@
   ```
 - Tới đây chúng ta đã có môi trường để bắt đầu thực hành với K8S rồi. Sau phần này chúng ta nên đọc sang phần các khái niệm trong K8S trước khi đi vào thực hành chi tiết hơn.
     
+## Cài Dashboard cho K8s
+- Link hướng dẫn gốc: https://github.com/kubernetes/dashboard/blob/master/README.md
+- Tạo file `dashboard-admin.yaml` định nghĩa các quyền cho user admin
+`vim dashboard-admin.yaml`
+- Điền thông tin sau:
+```
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: kubernetes-dashboard
+  labels:
+    k8s-app: kubernetes-dashboard
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: kubernetes-dashboard
+  namespace: kube-system
+```
+- Chạy lệnh sau để deploy cái ClusterRoleBinding trên: `kubectl create -f dashboard-admin.yaml`
+- Cài Dashboad bằng lệnh sau:
+`kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml`
+- **Lúc này, pod Dashboad đã được tạo ra nằm trên namespace kube-system, đọc ở link gốc sẽ hiểu**
+- Chạy lệnh sau để sửa cấu hình Dashboard để nat port ra ngoài:
+`kubectl -n kube-system edit service kubernetes-dashboard`
+- Sau khi chạy lệnh trên, bạn sẽ được ở 1 file config bằng trình soạn thảo `vim`, hãy sửa dòng **type: ClusterIP** thành **type: NodePort** và lưu lại
+- Chạy lệnh `kubectl -n kube-system get pods` để xem pod Dashboard là gì. ví dụ:
+
+<img src="https://i.imgur.com/lxrpGDv.png">
+
+- Chạy lệnh `kubectl -n kube-system describe pod kubernetes-dashboard-57df4db6b-4ksbb` để xem pod đó nằm trên node nào, như của tôi là trên node **k8s-node2** có địa chỉ IP là: 192.168.40.182
+
+<img src="https://i.imgur.com/uWC8KMI.png">
+
+- Sau đó chạy lệnh `kubectl -n kube-system get secret` để show ra các secret
+
+<img src="https://i.imgur.com/Mg310Hx.png">
     
-    
-    
+- Lựa chọn `kubernetes-dashboard-token...` và chạy lệnh `kubectl -n kube-system describe secret kubernetes-dashboard-token-...` để xem token
 
+<img src="https://i.imgur.com/E3mFvTa.png">
 
+- Chạy lệnh `kubectl -n kube-system get services` để biết port được nat ra ngoài là port nào
 
+<img src="https://i.imgur.com/0UdSbFl.png">
 
+- Sau đó dùng token bên trên để đăng nhập và dashboard, nhớ là https nhé: https://192.168.40.182:30324
 
 
 
