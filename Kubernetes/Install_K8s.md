@@ -193,29 +193,29 @@
     - Sau khi chạy kết quả như sau là thành công: http://paste.openstack.org/raw/720277/ (Nếu chưa đúng thì kiểm tra lại từ đầu nhé
     - Luư ý: Nếu gặp thông báo lỗi [ERROR Swap]: running with swap on is not supported. Please disable swap khi thực hiện kubeadm init thì cần thực hiện lệnh swapoff -a. Sau đó thực hiện lại lệnh ở trên.
     - Tới đây, bạn có 2 sự lựa chọn, 1 là sử dụng user `root` hiện tại để tiếp tục cài đặt, cấu hình, 2 là sử dụng 1 tài khoản khác
-  ### 4.3.1: Sử dụng tài khoản root để thao tác với K8s
-    - **Cách 1**: Trong mỗi phiên ssh bằng tài khoản `root`, để sử dụng được lệnh của **K8s** thì cần thực hiện lệnh dưới để khai báo biến môi trường.
+  ### 4.3.1 Sử dụng tài khoản root để thao tác với K8s
+   - **Cách 1**: Trong mỗi phiên ssh bằng tài khoản `root`, để sử dụng được lệnh của **K8s** thì cần thực hiện lệnh dưới để khai báo biến môi trường.
       `export KUBECONFIG=/etc/kubernetes/admin.conf`
-    - **cách 2**: Khai báo cố định biến môi trường, sẽ không phải export như bên trên mỗi lần ssh nữa:
+   - **cách 2**: Khai báo cố định biến môi trường, sẽ không phải export như bên trên mỗi lần ssh nữa:
       ```
       mkdir -p $HOME/.kube
       sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
       sudo chown $(id -u):$(id -g) $HOME/.kube/config
       ```
   ### 4.3.2 Sử dụng tài khoản khác root
-    - Tạo user `ubuntu` để thực hiện cấu hình cho K8S. Nếu có user trước đó rồi thì không cần thực hiện bước này.
+   - Tạo user `ubuntu` để thực hiện cấu hình cho K8S. Nếu có user trước đó rồi thì không cần thực hiện bước này.
 
       ```sh
       adduser ubuntu
       ```
 
-    - Nhập thông tin và mật khẩu cho user `ubuntu`, sau đó phân quyền sudoer bằng lệnh dưới.
+   - Nhập thông tin và mật khẩu cho user `ubuntu`, sau đó phân quyền sudoer bằng lệnh dưới.
 
       ```sh
       echo "ubuntu ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
       ```
 
-    - Chuyển sang user ubuntu để thực hiện.
+   - Chuyển sang user ubuntu để thực hiện.
 
       ```sh
       su - ubuntu
@@ -224,16 +224,80 @@
       sudo chown $(id -u):$(id -g) $HOME/.kube/config
       ```
 
-    - Sử dụng thủ thuật dưới để thao tác lệnh trong k8s được thuận lợi hơn nhờ việc tư động hoàn thiện lệnh mỗi khi thao tác.
+   - Sử dụng thủ thuật dưới để thao tác lệnh trong k8s được thuận lợi hơn nhờ việc tư động hoàn thiện lệnh mỗi khi thao tác.
 
       ```sh
       echo "source <(kubectl completion bash)" >> ~/.bashrc
       ```
-  ### Cài đặt Pod Network
-    - Đứng trên node **K8s** cài đặt Pod network
-    - **K8s** có nhiều sự lựa chọn giải pháp network để kết nối các container, trong hướng dẫn này, tôi sử dụng `fl`
-   
-    
+  ### 4.4 Cài đặt Pod Network
+   - Đứng trên node **K8s** cài đặt Pod network
+   - **K8s** có nhiều sự lựa chọn giải pháp network để kết nối các container, trong hướng dẫn này, tôi sử dụng `flannel`
+   `kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml`
+   - Kết quả lệnh như sau:
+   ```
+    root@k8s-master:~# kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+    clusterrole.rbac.authorization.k8s.io "flannel" created
+    clusterrolebinding.rbac.authorization.k8s.io "flannel" created
+    serviceaccount "flannel" created
+    configmap "kube-flannel-cfg" created
+    daemonset.extensions "kube-flannel-ds" created
+   ```
+   - Từ bản 1.9 trở lên, thực hiện lệnh dưới để tạo token trên **k8s-master**, kết quả trả về được sử dụng để thực hiện trên **k8s-node1** và **k8s-node2**
+   `sudo kubeadm token create --print-join-command`
+   - Sau câu lệnh trên, bạn sẽ nhận được 1 token, bạn sẽ sử dụng token đó trên **k8s-node1** và **k8s-node2** để join vào cụm cluster mà mình vừa tạo bên trên
+ ### 4.5 Thực hiện join `k8s-node1` và `k8s-node2`và cụm cluster
+  - Đứng trên cả 2 node **k8s-node1** và **k8s-node2** và thực hiện câu lệnh join, tốt hơn cả là bạn nên copy câu lệnh trong kết quả phần đầu của mục **4.3** ý. còn đây là câu lệnh của mình:
+  `kubeadm join --token 150984.0da1fe160e5113f0 192.168.40.180:6443 --discovery-token-ca-cert-hash sha256:cb8e0cd1238dc8fe8b1b2f16fe02817425005f04a8ddd09a7c19db08b75f72eb`
+  - Lưu ý: Nếu có thông báo [ERROR Swap]: running with swap on is not supported. Please disable swap khi thực hiện lệnh join thì sử dụng lệnh dưới và thực hiện lại lệnh join.
+  `swapoff -a`
+  - Kết quả trả về là:
+  ```
+  [preflight] Running pre-flight checks.
+        [WARNING FileExisting-crictl]: crictl not found in system path
+  [discovery] Trying to connect to API Server "192.168.40.180:6443"
+  [discovery] Created cluster-info discovery client, requesting info from "https://172.16.68.130:6443"
+  [discovery] Requesting info from "https://172.16.68.130:6443" again to validate TLS against the pinned public key
+  [discovery] Cluster info signature and contents are valid and TLS certificate validates against pinned roots, will use API Server "172.16.68.130:6443"
+  [discovery] Successfully established connection with API Server "172.16.68.130:6443"
+
+  This node has joined the cluster:
+  * Certificate signing request was sent to k8s-master and a response
+    was received.
+  * The Kubelet was informed of the new secure connection details.
+
+  Run 'kubectl get nodes' on the k8s-master to see this node join the cluster.
+  root@k8s-node1:~#
+  ```
+  - Sau khi đã join **k8s-node1** và **k8s-node2** bằng lệnh trên, kiểm tra lại đã ok chưa bằng lệnh:
+  ```
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+  kubectl get nodes
+  ```
+  - Kết quả trả về của lệnh trên như sau:
+  ```
+  NAME      STATUS    ROLES     AGE       VERSION
+  k8s-master    Ready     k8s-master    9h        v1.9.2
+  k8s-node1     Ready     <none>    8h        v1.9.2
+  k8s-node2     Ready     <none>    6m        v1.9.2
+  ```
+  - Chúng ta có thể thấy ở cột STATUS đã có trạng thái Ready. Tiếp tục thực hiện hiện lệnh dưới để download hoặc kiểm tra trạng thái của các thành phần trong K8S trên các node đã hoạt động hay chưa. `kubectl get pod --all-namespaces`
+  - Kết quả như bên dưới là ok (kiểm tra cột STATUS).
+
+  ```
+  NAMESPACE     NAME                             READY     STATUS    RESTARTS   AGE
+  kube-system   etcd-k8s-master                      1/1       Running   0          9h
+  kube-system   kube-apiserver-k8s-master            1/1       Running   0          9h
+  kube-system   kube-controller-manager-k8s-master   1/1       Running   0          9h
+  kube-system   kube-dns-6f4fd4bdf-ctxx7         3/3       Running   0          9h
+  kube-system   kube-flannel-ds-kjnhs            1/1       Running   0          9h
+  kube-system   kube-flannel-ds-wz648            1/1       Running   0          8h
+  kube-system   kube-flannel-ds-xtcj9            1/1       Running   0          36m
+  kube-system   kube-proxy-5slwp                 1/1       Running   0          36m
+  kube-system   kube-proxy-5trrj                 1/1       Running   0          9h
+  kube-system   kube-proxy-b54bs                 1/1       Running   0          8h
+  kube-system   kube-scheduler-k8s-master            1/1       Running   0          9h
+  ```
+- Tới đây chúng ta đã có môi trường để bắt đầu thực hành với K8S rồi. Sau phần này chúng ta nên đọc sang phần các khái niệm trong K8S trước khi đi vào thực hành chi tiết hơn.
     
     
     
