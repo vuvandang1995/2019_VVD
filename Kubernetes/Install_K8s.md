@@ -168,9 +168,7 @@
   - **kubelet**: là thành phần chạy trên các host, có nhiệm vụ kích hoạt các **pod** và container trong cụm cluster của **K8s**
   - **kubectl**: là công cụ cung cấp CLI (giao diện dòng lệnh) để tương tác với **K8s** qua API
 ### 4.1 Cài đặt docker trên tất cả các node
-    ```
-    apt-get -y update && apt-get -y install docker.io
-    ```
+  - `apt-get -y update && apt-get -y install docker.io`
 ### 4.2 Cài đặt các thành phần của K8s trên tất cả các node
   - Tất cả các node:
     ```
