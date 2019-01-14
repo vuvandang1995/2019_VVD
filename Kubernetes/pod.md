@@ -99,7 +99,7 @@ Consumed: 27
 Consumed: done
  ```
  
- ![multicontainerpodproducerconsumer](../../images/multicontainerpodproducerconsumer.png)
+<img src="https://i.imgur.com/y0H1K7F.png">
  
  Tuy nhiên, có một vấn đề lớn với Pod này và nó liên quan đến cách các container khởi động
  
@@ -215,7 +215,7 @@ NodePort:	<unset>	31418/TCP
  
  Request này sau đó được chuyển tiếp (forward) tới port 5000 của webapp container.
  
- ![multicontainerwebapp](../../images/multicontainerwebapp.png)
+<img src="https://i.imgur.com/6wIrthU.png">
  
 ### Exposing multiple container in a Pod
  
