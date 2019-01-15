@@ -1,0 +1,54 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+ name: mticket
+ labels:
+   app: mticket
+spec:
+ replicas: 1
+ template:
+    metadata:
+      labels:
+        app: mticket
+    spec:
+      containers:
+      - name: rd
+        image: redis:2.8
+        ports:
+        - containerPort: 6379
+      - name: db
+        image: dangvv1995/docker_db
+        ports:
+        - containerPort: 3306
+      - name: web
+        image: dangvv1995/docker_web:2.0
+        ports:
+        - containerPort: 8000
+        - containerPort: 8001
+      - name: nginx
+        image: dangvv1995/nginxmtk:2.0
+        ports:
+        - containerPort: 80
+
+---
+
+
+kind: Service
+apiVersion: v1
+metadata:
+  # Unique key of the Service instance
+  name: mticketsv
+spec:
+  ports:
+    # Accept traffic sent to port 80
+    - name: http
+      port: 80
+      targetPort: 80
+  selector:
+    # Loadbalance traffic across Pods matching
+    # this label selector
+    app: mticket
+  # Create an HA proxy in the cloud provider
+  # with an External IP address - *Only supported
+  # by some cloud providers*
+  type: NodePort
