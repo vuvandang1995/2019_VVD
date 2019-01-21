@@ -331,9 +331,6 @@ subjects:
 
 <img src="https://i.imgur.com/lxrpGDv.png">
 
-
-<img src="https://i.imgur.com/uWC8KMI.png">
-
 - Sau đó chạy lệnh `kubectl -n kube-system get secret` để show ra các secret
 
 <img src="https://i.imgur.com/Mg310Hx.png">
