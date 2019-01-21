@@ -331,7 +331,6 @@ subjects:
 
 <img src="https://i.imgur.com/lxrpGDv.png">
 
-- Chạy lệnh `kubectl -n kube-system describe pod kubernetes-dashboard-57df4db6b-4ksbb` để xem pod đó nằm trên node nào, như của tôi là trên node **k8s-node2** có địa chỉ IP là: 192.168.40.182
 
 <img src="https://i.imgur.com/uWC8KMI.png">
 
