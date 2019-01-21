@@ -343,7 +343,7 @@ subjects:
 
 <img src="https://i.imgur.com/0UdSbFl.png">
 
-- Sau đó dùng token bên trên để đăng nhập và dashboard, nhớ là https nhé: https://192.168.40.182:30324
+- Sau đó dùng token bên trên và địa chỉ IP của các node trong cụm Cluster để đăng nhập và dashboard, nhớ là https nhé: https://192.168.40.182:30324
 
 
 
