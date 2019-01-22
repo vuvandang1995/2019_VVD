@@ -230,7 +230,7 @@
       echo "source <(kubectl completion bash)" >> ~/.bashrc
       ```
   ### 4.4 Cài đặt Pod Network
-   - Đứng trên node **K8s** cài đặt Pod network
+   - Đứng trên node **k8s-master** cài đặt Pod network
    - **K8s** có nhiều sự lựa chọn giải pháp network để kết nối các container, trong hướng dẫn này, tôi sử dụng `flannel`
    `kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml`
    - Kết quả lệnh như sau:
