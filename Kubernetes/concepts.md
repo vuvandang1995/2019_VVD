@@ -159,7 +159,7 @@ spec:
         ports:
         - containerPort: 80
 ```
-### 1.4 (Services) [https://kubernetes.io/docs/concepts/services-networking/service/]
+### 1.4 (Services)[https://kubernetes.io/docs/concepts/services-networking/service/]
 - Giả sử chúng ta dùng deployment định nghĩa ra thành phần của 1 pod web server và thiết lập replicas là 3. Nghĩa là sẽ có 3 pod giống nhau được sinh ra, người dùng muốn truy cập vào web, cần phải biết 1 trong 3 địa chỉ IP của các pod. Nhưng pod có thể xảy ra sự cố nào đó và được khởi tạo lại, rất có thể pod mới sinh ra để thay thế đó sẽ có địa chi IP khác với IP của pod cũ, người dùng làm sao biết IP mới đó mà truy cập, **Service** sẽ giải quyết vấn đề này.
 - Có thể hiểu 1 cách đơn giản như này: **Service** là đại diện cho 1 nhóm các pod có chung 1 mục đích. **Service** giống như 1 domain, domain được trỏ vào pod, giống như trỏ vào web server. Điều tuyệt vời ở đây là: 1 "domain"(service) có thể trỏ được vào nhiều "web server"(pod). Đôi khi người ta hay gọi là mô hình micro-services. **Services** ở đây giống như **gateway server**cho các pod. Khi đó, **service**sẽ đóng vai trò là một **Internal LoadBalancer**
 - Ví dụ, có 3 pod relicas là web server nginx. Tạo ra một **Service** là "domain" cho 3 pod đó. Nghĩa là khi có 1 request HTTP vào service, nó sẽ forward request xuống cho 3 pod. Còn việc pod nào được chọn xử lý request thì mặc định sẽ tuân theo cơ chế roud-robin (có thể tùy chỉnh lại cơ chế này)
