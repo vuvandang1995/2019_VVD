@@ -272,7 +272,7 @@ spec:
   - ClusterIP (mặc định)
   - NodePort
   - LoadBalancer
-- **ClusterIP**
+#### 1.4.1 - **ClusterIP**
 
 <img src="https://i.imgur.com/Mcvqjss.png">
 
@@ -280,13 +280,13 @@ spec:
 - **Tác dụng của service với type là ClusterIP:**
   - Sử dụng để định danh giữa các dịch vụ trong cluster
   - Internal LoadBalancer
-- **NodePort**
+#### 1.4.2 - **NodePort**
 
 <img src="https://i.imgur.com/IlrET6I.png">
 
 - Với service types là NodePort, bạn đang ra lệnh cho cluster mở một cổng ở tất cả các Node trong cluster và từ đó người dùng cuối có thể truy cập ứng dụng của bạn thông qua **<Node_IP>:<Node_Port>**
 - **Tác dụng:** Tác dụng lớn nhất là debug, bạn có thể expose ứng dụng của bạn ra ngoài internet để người dùng có thể truy cập được một cách rất đơn giản mà không tốn tiền như khi sử dụng LoadBalancer(sau này còn một cách khác là Ingress và cũng tốn tiền)
-- **LoadBalancer**
+#### 1.4.3 - **LoadBalancer**
 
 <img src="https://i.imgur.com/9JKSQY0.png">
 
