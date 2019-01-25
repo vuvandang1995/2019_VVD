@@ -291,9 +291,26 @@ spec:
 <img src="https://i.imgur.com/9JKSQY0.png">
 
 - với kiểu service này, là bạn sử dụng 1 dịch vụ LoadBalacer bên ngoài
-
-
-
+### 1.5 Volumes
+- Volume thể hiện vị trí nơi mà các container có thể truy cập và lưu trữ thông tin
+- Volumes có thể là local filesystem, local storage, Cehp, GlusterFS, ...
+- Persistent volume (PV) là khái niệm để đưa ra một dung lượng lưu trữ THỰC TẾ 1GB, 10GB ...
+- Persistent volume claim (PVC) là khái niệm ảo, đưa ra một dung lượng CẦN THIẾT, mà ứng dụng yêu cầu.
+- Khi 1 PV thoả mãn yêu cầu của 1 PVC thì chúng "match" nhau, rồi "bound" (buộc / kết nối) lại với nhạu.
+### 1.6 Namespaces
+- Kubernetes supports multiple virtual clusters backed by the same physical cluster. These virtual clusters are called namespaces.
+- Namespace là một cách để chia và cô lập tài nguyên của cụm cluster giữa nhiều người dùng, các object trong cùng một namespace sẽ có cùng một cơ chế điều khiển truy cập là `default`
+- Ban đầu, Kubernetes có 3 namespace được tạo:
+  - **default** là namespace mặc định cho các object mà nó không được khai báo namespace trong file .yaml của object đó.
+  - **kube-system**: là namespace cho các đối tượng được tạo bởi hệ thống Kubernetes
+  - **kube-public**: là namespace được tạo tự động và và thể truy cập bởi tất cả user
+### 1.7 ConfigMap
+- ConfigMap là giải pháp để nhét 1 file config / đặt các ENVironment var hay set các argument khi gọi câu lệnh. ConfigMap là một cục config, mà pod nào cần, thì chỉ định là nó cần - giúp dễ dàng chia sẻ file cấu hình.
+### 1.8 Secret
+- secret dùng để lưu trữ các mật khẩu, token, ... hay những gì cần giữ bí mật. Nó nằm bên trong container.
+### Lables
+- Labels: Là các cặp key-value được Kubernetes đính kèm vào pods, replication controllers,...
+- Labels can be used to select objects and to find collections of objects that satisfy certain conditions. In contrast, annotations are not used to identify and select objects.
 
 
 
