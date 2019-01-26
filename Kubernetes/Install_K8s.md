@@ -346,4 +346,55 @@ subjects:
 - Sau đó dùng token bên trên và địa chỉ IP của các node trong cụm Cluster để đăng nhập và dashboard, nhớ là https nhé: https://192.168.40.182:30324
 
 
+## Cài Google Cloud SDK
+a) Installation of Cloud SDK
 
+i) # Update YUM with Cloud SDK repo information:Red Hat and Centos.
+
+# Update YUM with Cloud SDK repo information
+sudo tee -a /etc/yum.repos.d/google-cloud-sdk.repo << EOM
+[google-cloud-sdk]
+name=Google Cloud SDK
+baseurl=https://packages.cloud.google.com/yum/repos/cloud-sdk-el7-x86_64
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
+       https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+EOM
+
+# Install the Cloud SDK
+yum install google-cloud-sdk
+ii) Debian and Ubuntu
+
+# Create an environment variable for the correct distribution
+export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
+
+# Add the Cloud SDK distribution URI as a package source
+echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+
+# Import the Google Cloud Platform public key
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+
+# Update the package list and install the Cloud SDK
+sudo apt-get update && sudo apt-get install google-cloud-sdk
+b) To get started run gcloud init with console-only option
+
+gcloud init --console-only
+
+c) Select a Cloud Platform project from the list of those where you have Owner, Editor or Viewer permissions
+
+
+d) To connect cluster through ‘kubectl’, click on ‘‘connect”.
+
+
+e) copy ‘gcloud container’ command.
+
+
+f) Paste command which we have copied in ‘step e’.
+
+
+g) Install the kubectl Kubernetes client.
+
+gcloud components install kubectl
+h) Now we have configured kube-config and we can access cluster through kubectl commands.
