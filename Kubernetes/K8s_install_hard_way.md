@@ -12,11 +12,17 @@
 # Cài đặt
 ## 1. Cài đặt HA proxy - keepalived
 - Chạy các lệnh trên cả 3 node master:
-        - `sudo apt-get install -y haproxy keepalived`
+
+`sudo apt-get install -y haproxy keepalived`
+
 - Chạy lệnh sau với admin admin (`su -m`):
-        - `echo "net.ipv4.ip_nonlocal_bind=1" >> /etc/sysctl.conf`
+
+`echo "net.ipv4.ip_nonlocal_bind=1" >> /etc/sysctl.conf`
+
 - Mở file config haproxy:
-        - `sudo vim /etc/haproxy/haproxy.cfg`
+
+`sudo vim /etc/haproxy/haproxy.cfg`
+
 - Thêm vào cuối file nội dung sau:
 ```
 frontend firstbalance
@@ -31,7 +37,9 @@ backend api
         option httpchk
 ```
 - Tạo file config keepalived trên `k8s-master`:
+
 `sudo vim /etc/keepalived/keepalived.conf`
+
 - Thêm nội dung sau:
 ```
 vrrp_script chk_haproxy {
@@ -58,7 +66,9 @@ vrrp_instance VI_1 {
 }
 ```
 - Tạo file config keepalived trên `k8s-master2`:
+
 `sudo vim /etc/keepalived/keepalived.conf`
+
 - Thêm nội dung sau:
 ```
 vrrp_script chk_haproxy {
@@ -85,7 +95,9 @@ vrrp_instance VI_1 {
 }
 ```
 - Tạo file config keepalived trên `k8s-master3`:
+
 `sudo vim /etc/keepalived/keepalived.conf`
+
 - Thêm nội dung sau:
 ```
 vrrp_script chk_haproxy {
