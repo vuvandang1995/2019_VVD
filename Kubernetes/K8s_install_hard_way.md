@@ -439,4 +439,25 @@ sudo systemctl start keepalived
 sudo systemctl enable keepalived
 sudo systemctl restart keepalived
 ```
-## 3. 
+## 3. Cài đặt Client tool
+- Trong bài viết này, tôi sử dụng `cfssl` để tạo các chửng chỉ ssl và key xác thực. Tiếp đến là cài `cfssljson`, `kubectl`.
+- Install `cfssl`
+```
+wget -q --show-progress --https-only --timestamping \
+  https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 \
+  https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
+```
+
+`chmod +x cfssl_linux-amd64 cfssljson_linux-amd64`
+
+`sudo mv cfssl_linux-amd64 /usr/local/bin/cfssl`
+
+`sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson`
+
+- Install kubectl
+
+`wget https://storage.googleapis.com/kubernetes-release/release/v1.12.0/bin/linux/amd64/kubectl`
+
+`chmod +x kubectl`
+
+`sudo mv kubectl /usr/local/bin/`
