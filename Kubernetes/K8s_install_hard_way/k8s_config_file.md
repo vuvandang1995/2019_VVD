@@ -115,11 +115,36 @@ done
   kubectl config use-context default --kubeconfig=admin.kubeconfig
 }
 ```
+## Generating the Data Encryption Config and Key
+- Kubernetes stores a variety of data including cluster state, application configurations, and secrets. Kubernetes supports the ability to encrypt cluster data at rest.
+- In this lab you will generate an encryption key and an encryption config suitable for encrypting Kubernetes Secrets.
+### The Encryption Key
+- Generate an encryption key:
+
+`ENCRYPTION_KEY=$(head -c 32 /dev/urandom | base64)`
+
+### The Encryption Config File
+- Tạo file `encryption-config.yaml`:
+```
+cat > encryption-config.yaml <<EOF
+kind: EncryptionConfig
+apiVersion: v1
+resources:
+  - resources:
+      - secrets
+    providers:
+      - aescbc:
+          keys:
+            - name: key1
+              secret: ${ENCRYPTION_KEY}
+      - identity: {}
+EOF
+```
 ## Chuyển các file config tới các node khác
 ```
 scp k8s-node1.kubeconfig kube-proxy.kubeconfig node1@192.168.40.183:~/
 scp k8s-node2.kubeconfig kube-proxy.kubeconfig node2@192.168.40.184:~/
 scp k8s-node3.kubeconfig kube-proxy.kubeconfig node3@192.168.40.185:~/
-scp admin.kubeconfig kube-controller-manager.kubeconfig kube-scheduler.kubeconfig master2@192.168.40.181:~/
-scp admin.kubeconfig kube-controller-manager.kubeconfig kube-scheduler.kubeconfig master3@192.168.40.182:~/
+scp admin.kubeconfig kube-controller-manager.kubeconfig kube-scheduler.kubeconfig encryption-config.yaml master2@192.168.40.181:~/
+scp admin.kubeconfig kube-controller-manager.kubeconfig kube-scheduler.kubeconfig encryption-config.yaml master3@192.168.40.182:~/
 ```
