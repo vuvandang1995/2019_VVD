@@ -40,7 +40,7 @@ backend api
 
 `sudo vim /etc/keepalived/keepalived.conf`
 
-- Thêm nội dung sau:
+- Thêm nội dung sau: **Lưu ý: cần chỉnh sửa lại tên card mạng ens3 bên dưới cho đúng với server của bạn**
 ```
 vrrp_script chk_haproxy {
   script "killall -0 haproxy"
@@ -69,7 +69,7 @@ vrrp_instance VI_1 {
 
 `sudo vim /etc/keepalived/keepalived.conf`
 
-- Thêm nội dung sau:
+- Thêm nội dung sau: **Lưu ý: cần chỉnh sửa lại tên card mạng ens3 bên dưới cho đúng với server của bạn**
 ```
 vrrp_script chk_haproxy {
   script "killall -0 haproxy"
@@ -98,7 +98,7 @@ vrrp_instance VI_1 {
 
 `sudo vim /etc/keepalived/keepalived.conf`
 
-- Thêm nội dung sau:
+- Thêm nội dung sau: **Lưu ý: cần chỉnh sửa lại tên card mạng ens3 bên dưới cho đúng với server của bạn**
 ```
 vrrp_script chk_haproxy {
   script "killall -0 haproxy"
