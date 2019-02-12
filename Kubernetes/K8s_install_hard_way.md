@@ -11,12 +11,12 @@
 - k8s-node3: 192.168.40.185
 # Cài đặt
 ## 1. Cài đặt HA proxy - keepalived
-- Chạy các lệnh trên cả 3 node master
-`sudo apt-get install -y haproxy keepalived`
-- Chạy lệnh sau với admin admin (`su -m`)
-`echo "net.ipv4.ip_nonlocal_bind=1" >> /etc/sysctl.conf`
-- Mở file config haproxy
-`sudo vim /etc/haproxy/haproxy.cfg`
+- Chạy các lệnh trên cả 3 node master:
+        - `sudo apt-get install -y haproxy keepalived`
+- Chạy lệnh sau với admin admin (`su -m`):
+        - `echo "net.ipv4.ip_nonlocal_bind=1" >> /etc/sysctl.conf`
+- Mở file config haproxy:
+        - `sudo vim /etc/haproxy/haproxy.cfg`
 - Thêm vào cuối file nội dung sau:
 ```
 frontend firstbalance
