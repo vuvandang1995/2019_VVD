@@ -77,7 +77,7 @@
       <img src="https://i.imgur.com/uzDnYol.png">
       
       - Kiểm tra lại bằng lệnh: `free -m`
-    - Đặt IP cho node **k8s-master** bằng cách chạy lệnh bên dưới để sửa file `/etc/network/interfaces`
+    - Đặt IP cho node **k8s-master2** bằng cách chạy lệnh bên dưới để sửa file `/etc/network/interfaces`
       ```
       cat << EOF > /etc/network/interfaces
       # This file describes the network interfaces available on your system
@@ -95,8 +95,8 @@
       dns-nameservers 8.8.8.8
       EOF
       ```
-    - Đặt hostname cho máy `k8s-master` bằng cách sửa nội dung các file `/etc/hosts/` và `/etc/hostname`
-      - Chay lệnh dưới để khai báo hostname cho `k8s-master`
+    - Đặt hostname cho máy `k8s-master2` bằng cách sửa nội dung các file `/etc/hosts/` và `/etc/hostname`
+      - Chay lệnh dưới để khai báo hostname cho `k8s-master2`
         ```
         cat << EOF > /etc/hosts
         127.0.0.1       localhost k8s-master2
@@ -128,7 +128,7 @@
       <img src="https://i.imgur.com/uzDnYol.png">
       
       - Kiểm tra lại bằng lệnh: `free -m`
-    - Đặt IP cho node **k8s-master** bằng cách chạy lệnh bên dưới để sửa file `/etc/network/interfaces`
+    - Đặt IP cho node **k8s-master3** bằng cách chạy lệnh bên dưới để sửa file `/etc/network/interfaces`
       ```
       cat << EOF > /etc/network/interfaces
       # This file describes the network interfaces available on your system
@@ -146,8 +146,8 @@
       dns-nameservers 8.8.8.8
       EOF
       ```
-    - Đặt hostname cho máy `k8s-master` bằng cách sửa nội dung các file `/etc/hosts/` và `/etc/hostname`
-      - Chay lệnh dưới để khai báo hostname cho `k8s-master`
+    - Đặt hostname cho máy `k8s-master3` bằng cách sửa nội dung các file `/etc/hosts/` và `/etc/hostname`
+      - Chay lệnh dưới để khai báo hostname cho `k8s-master3`
         ```
         cat << EOF > /etc/hosts
         127.0.0.1       localhost k8s-master3
