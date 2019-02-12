@@ -279,8 +279,8 @@ sudo cat kubernetes.pem kubernetes-key.pem \
 scp ca.pem k8s-node1.pem k8s-node1-key.pem node1@192.168.40.183:~/
 scp ca.pem k8s-node2.pem k8s-node2-key.pem node2@192.168.40.184:~/
 scp ca.pem k8s-node3.pem k8s-node3-key.pem node3@192.168.40.185:~/
-scp ca.pem ca-key.pem kubernetes-key.pem kubernetes.pem service-account-key.pem service-account.pem k8s.pem master2@192.168.40.181:~/
-scp ca.pem ca-key.pem kubernetes-key.pem kubernetes.pem service-account-key.pem service-account.pem k8s.pem master3@192.168.40.182:~/
+scp ca.pem ca-key.pem kubernetes-key.pem kubernetes.pem service-account-key.pem service-account.pem /etc/ssl/k8s.pem master2@192.168.40.181:~/
+scp ca.pem ca-key.pem kubernetes-key.pem kubernetes.pem service-account-key.pem service-account.pem /etc/ssl/k8s.pem master3@192.168.40.182:~/
 ```
 ## Copy file k8s.pen vào thư mục /etc/ssl
 - Trên node k8s-master2:
