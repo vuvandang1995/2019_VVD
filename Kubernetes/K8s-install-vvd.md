@@ -442,7 +442,7 @@ sudo systemctl start haproxy
 sudo systemctl enable haproxy
 ```
 ## Cài các thành phần cho K8s
-- Trên tất cả các node:
+- **Trên tất cả các node:**
 
 `apt-get -y update && apt-get -y install docker.io`
 
@@ -614,4 +614,22 @@ kube-scheduler-k8s-master3            1/1     Running   0          7m42s
 weave-net-4p2zl                       2/2     Running   1          7m42s
 weave-net-6gmgx                       2/2     Running   0          12m
 weave-net-b86dt                       2/2     Running   1          2m12s
+```
+- **Join các node worker vào cluster:**
+
+`kubeadm join 192.168.40.186:6444 --token t9zkev.ns6r6od1oovlio2i --discovery-token-ca-cert-hash sha256:904629ae281ef47a9c8ddda6507a4d5812bfdf586ad73f8a039230715b2db8fa`
+
+- Kiểm tra lại trên các node master:
+
+`kubectl get nodes -n kube-system`
+
+- Kết quả đúng:
+```
+NAME          STATUS   ROLES    AGE   VERSION
+k8s-master    Ready    master   65m   v1.13.3
+k8s-master2   Ready    master   44m   v1.13.3
+k8s-master3   Ready    <none>   50m   v1.13.3
+k8s-node1     Ready    <none>   38m   v1.13.3
+k8s-node2     Ready    <none>   38m   v1.13.3
+k8s-node3     Ready    <none>   38m   v1.13.3
 ```
