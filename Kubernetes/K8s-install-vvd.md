@@ -10,6 +10,7 @@
 - k8s-node2: 192.168.40.184
 - k8s-node3: 192.168.40.185
 # Cài đặt
+- ssh tất cả các node bằng tài khoản `root`
 ## 1. Đặt IP và name cho các server
 ### `k8s-master`:
 - Update:
@@ -433,10 +434,183 @@ vrrp_instance VI_1 {
   }
 }
 ```
-## Khởi động lại và bật dịch vụ haproxy-keepalived trên cả 3 node master
+### Khởi động lại và bật dịch vụ haproxy-keepalived trên cả 3 node master
 ```
 sudo systemctl start keepalived
 sudo systemctl enable keepalived
 sudo systemctl start haproxy
 sudo systemctl enable haproxy
+```
+## Cài các thành phần cho K8s
+- Trên tất cả các node:
+
+`apt-get -y update && apt-get -y install docker.io`
+
+`apt-get update && apt-get install -y apt-transport-https`
+
+```
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add
+cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+deb http://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+apt-get update  -y
+apt-get install -y kubelet kubeadm kubectl
+```
+- **Trên node master đầu tiên (k8s-master)**
+    - Tạo file `kubeadm-config.yaml`:
+    
+    `vim kubeadm-config.yaml`
+    
+    ```
+    apiVersion: kubeadm.k8s.io/v1beta1
+    kind: ClusterConfiguration
+    kubernetesVersion: stable
+    apiServer:
+      certSANs:
+      - "192.168.40.186"
+    controlPlaneEndpoint: "192.168.40.186:6444"
+    ```
+    - **Lưu ý: địa chỉ trong file config sẽ là địa chỉ của Virtal IP phần keepalived**
+    - Tạo cluster:
+    
+    `kubeadm init --config=kubeadm-config.yaml`
+    
+    - Kết quả ra như bên dưới thì bạn đã làm đúng, không thì làm lại từ đầu nha :D
+    ```
+    ........
+    kubeadm join 192.168.40.186:6444 --token t9zkev.ns6r6od1oovlio2i --discovery-token-ca-cert-hash sha256:904629ae281ef47a9c8ddda6507a4d5812bfdf586ad73f8a039230715b2db8fa
+    ```
+    -**Lưu ý: Nhớ lưu câu lệnh kết quả bên trên lại**
+    - Khai báo biến môi trường cấu hình user admin cho K8s:
+    ```
+    mkdir -p $HOME/.kube
+    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+    sudo chown $(id -u):$(id -g) $HOME/.kube/config
+    ```
+    - Cài đặt Pod network:
+    `kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"`
+    - Copy các chứng chỉ và key mà `kubeadmin` vừa generate lên 2 node master còn lại
+    
+    `vim copy.sh`
+    
+    ```
+    USER=root
+    MASTER_NODE_IPS="192.168.40.181 192.168.40.182"
+    for host in ${MASTER_NODE_IPS}; do
+       scp /etc/kubernetes/pki/ca.crt "${USER}"@$host:
+       scp /etc/kubernetes/pki/ca.key "${USER}"@$host:
+       scp /etc/kubernetes/pki/sa.key "${USER}"@$host:
+       scp /etc/kubernetes/pki/sa.pub "${USER}"@$host:
+       scp /etc/kubernetes/pki/front-proxy-ca.crt "${USER}"@$host:
+       scp /etc/kubernetes/pki/front-proxy-ca.key "${USER}"@$host:
+       scp /etc/kubernetes/pki/etcd/ca.crt "${USER}"@$host:etcd-ca.crt
+       scp /etc/kubernetes/pki/etcd/ca.key "${USER}"@$host:etcd-ca.key
+       scp /etc/kubernetes/admin.conf "${USER}"@$host:
+    done
+    ```
+    
+    `sh copy.sh`
+    
+- **Trên 2 node master còn lại**
+    - **k8s-master2**:
+        - Di chuyển các chứng chỉ và key vào thư mục `/etc/kubernetes/pki/` bằng cách:
+        
+        `vim move.sh`
+        
+        ```
+        USER=root
+        mkdir -p /etc/kubernetes/pki/etcd
+        mv /${USER}/ca.crt /etc/kubernetes/pki/
+        mv /${USER}/ca.key /etc/kubernetes/pki/
+        mv /${USER}/sa.pub /etc/kubernetes/pki/
+        mv /${USER}/sa.key /etc/kubernetes/pki/
+        mv /${USER}/front-proxy-ca.crt /etc/kubernetes/pki/
+        mv /${USER}/front-proxy-ca.key /etc/kubernetes/pki/
+        mv /${USER}/etcd-ca.crt /etc/kubernetes/pki/etcd/ca.crt
+        mv /${USER}/etcd-ca.key /etc/kubernetes/pki/etcd/ca.key
+        mv /${USER}/admin.conf /etc/kubernetes/admin.conf
+        ```
+        
+        `sh move.sh`
+        
+        - Khai báo biến môi trường cấu hình user admin cho K8s:
+        ```
+        mkdir -p $HOME/.kube
+        sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+        sudo chown $(id -u):$(id -g) $HOME/.kube/config
+        ```
+        
+        - Join các k8s-master2 vào cluster bằng cách sử dụng câu lệnh kết quả của k8s-master, thêm option và sau câu lênh đó: `--experimental-control-plane`
+        
+        `kubeadm join 192.168.40.186:6444 --token t9zkev.ns6r6od1oovlio2i --discovery-token-ca-cert-hash sha256:904629ae281ef47a9c8ddda6507a4d5812bfdf586ad73f8a039230715b2db8fa --experimental-control-plane`
+    - **k8s-master3**:
+        - Di chuyển các chứng chỉ và key vào thư mục `/etc/kubernetes/pki/` bằng cách:
+        
+        `vim move.sh`
+        
+        ```
+        USER=root
+        mkdir -p /etc/kubernetes/pki/etcd
+        mv /${USER}/ca.crt /etc/kubernetes/pki/
+        mv /${USER}/ca.key /etc/kubernetes/pki/
+        mv /${USER}/sa.pub /etc/kubernetes/pki/
+        mv /${USER}/sa.key /etc/kubernetes/pki/
+        mv /${USER}/front-proxy-ca.crt /etc/kubernetes/pki/
+        mv /${USER}/front-proxy-ca.key /etc/kubernetes/pki/
+        mv /${USER}/etcd-ca.crt /etc/kubernetes/pki/etcd/ca.crt
+        mv /${USER}/etcd-ca.key /etc/kubernetes/pki/etcd/ca.key
+        mv /${USER}/admin.conf /etc/kubernetes/admin.conf
+        ```
+        
+        `sh move.sh`
+        
+        - Khai báo biến môi trường cấu hình user admin cho K8s:
+        ```
+        mkdir -p $HOME/.kube
+        sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+        sudo chown $(id -u):$(id -g) $HOME/.kube/config
+        ```
+        
+        - Join các k8s-master3 vào cluster bằng cách sử dụng câu lệnh kết quả của k8s-master, thêm option và sau câu lênh đó: `--experimental-control-plane`
+        
+        `kubeadm join 192.168.40.186:6444 --token t9zkev.ns6r6od1oovlio2i --discovery-token-ca-cert-hash sha256:904629ae281ef47a9c8ddda6507a4d5812bfdf586ad73f8a039230715b2db8fa --experimental-control-plane`
+- Chờ khoảng 30 giây, kiểm tra lại cluster các node master bằng lệnh:
+```
+kubectl get nodes -n kube-system
+```
+- Kết quả đúng như sau:
+```
+NAME          STATUS   ROLES    AGE     VERSION
+k8s-master    Ready    master   24m     v1.13.3
+k8s-master2   Ready    master   4m10s   v1.13.3
+k8s-master3   Ready    <none>   9m40s   v1.13.3
+```
+- Kiểm tra cách thành phần K8s đã lên hay chưa?
+
+`kubectl get pod -n kube-system -w`
+
+- Kết quả:
+```
+NAME                                  READY   STATUS    RESTARTS   AGE
+coredns-86c58d9df4-9745h              1/1     Running   0          22m
+coredns-86c58d9df4-f9cn6              1/1     Running   0          22m
+etcd-k8s-master                       1/1     Running   2          18m
+etcd-k8s-master2                      1/1     Running   0          2m11s
+etcd-k8s-master3                      1/1     Running   0          7m41s
+kube-apiserver-k8s-master             1/1     Running   1          18m
+kube-apiserver-k8s-master2            1/1     Running   0          2m12s
+kube-apiserver-k8s-master3            1/1     Running   2          7m42s
+kube-controller-manager-k8s-master    1/1     Running   2          17m
+kube-controller-manager-k8s-master2   1/1     Running   0          2m12s
+kube-controller-manager-k8s-master3   1/1     Running   0          7m42s
+kube-proxy-2lt2c                      1/1     Running   0          7m42s
+kube-proxy-d9j8p                      1/1     Running   1          22m
+kube-proxy-kltbv                      1/1     Running   0          2m12s
+kube-scheduler-k8s-master             1/1     Running   2          18m
+kube-scheduler-k8s-master2            1/1     Running   0          2m12s
+kube-scheduler-k8s-master3            1/1     Running   0          7m42s
+weave-net-4p2zl                       2/2     Running   1          7m42s
+weave-net-6gmgx                       2/2     Running   0          12m
+weave-net-b86dt                       2/2     Running   1          2m12s
 ```
