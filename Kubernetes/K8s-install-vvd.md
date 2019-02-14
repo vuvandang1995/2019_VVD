@@ -481,7 +481,7 @@ apt-get install -y kubelet kubeadm kubectl
     ........
     kubeadm join 192.168.40.186:6444 --token t9zkev.ns6r6od1oovlio2i --discovery-token-ca-cert-hash sha256:904629ae281ef47a9c8ddda6507a4d5812bfdf586ad73f8a039230715b2db8fa
     ```
-    -**Lưu ý: Nhớ lưu câu lệnh kết quả bên trên lại**
+    - **Lưu ý: Nhớ lưu câu lệnh kết quả bên trên lại**
     - Khai báo biến môi trường cấu hình user admin cho K8s:
     ```
     mkdir -p $HOME/.kube
@@ -541,9 +541,10 @@ apt-get install -y kubelet kubeadm kubectl
         sudo chown $(id -u):$(id -g) $HOME/.kube/config
         ```
         
-        - Join các k8s-master2 vào cluster bằng cách sử dụng câu lệnh kết quả của k8s-master, thêm option và sau câu lênh đó: `--experimental-control-plane`
+        - Join các k8s-master2 vào cluster bằng cách sử dụng câu lệnh kết quả của `k8s-master`, thêm option này vào sau câu lênh đó: `--experimental-control-plane`
         
         `kubeadm join 192.168.40.186:6444 --token t9zkev.ns6r6od1oovlio2i --discovery-token-ca-cert-hash sha256:904629ae281ef47a9c8ddda6507a4d5812bfdf586ad73f8a039230715b2db8fa --experimental-control-plane`
+        
     - **k8s-master3**:
         - Di chuyển các chứng chỉ và key vào thư mục `/etc/kubernetes/pki/` bằng cách:
         
@@ -572,7 +573,7 @@ apt-get install -y kubelet kubeadm kubectl
         sudo chown $(id -u):$(id -g) $HOME/.kube/config
         ```
         
-        - Join các k8s-master3 vào cluster bằng cách sử dụng câu lệnh kết quả của k8s-master, thêm option và sau câu lênh đó: `--experimental-control-plane`
+        - Join các k8s-master3 vào cluster bằng cách sử dụng câu lệnh kết quả của `k8s-master`, thêm option vào sau câu lênh đó: `--experimental-control-plane`
         
         `kubeadm join 192.168.40.186:6444 --token t9zkev.ns6r6od1oovlio2i --discovery-token-ca-cert-hash sha256:904629ae281ef47a9c8ddda6507a4d5812bfdf586ad73f8a039230715b2db8fa --experimental-control-plane`
 - Chờ khoảng 30 giây, kiểm tra lại cluster các node master bằng lệnh:
