@@ -456,6 +456,7 @@ EOF
 
 apt-get update  -y
 apt-get install -y kubelet kubeadm kubectl
+apt-mark hold kubelet kubeadm kubectl
 ```
 - **Trên node master đầu tiên (k8s-master)**
     - Tạo file `kubeadm-config.yaml`:
@@ -470,6 +471,8 @@ apt-get install -y kubelet kubeadm kubectl
       certSANs:
       - "192.168.40.186"
     controlPlaneEndpoint: "192.168.40.186:6444"
+    networking:
+    podSubnet: 192.168.0.0/16
     ```
     - **Lưu ý: địa chỉ trong file config sẽ là địa chỉ của Virtal IP phần keepalived**
     - Tạo cluster:
@@ -489,7 +492,17 @@ apt-get install -y kubelet kubeadm kubectl
     sudo chown $(id -u):$(id -g) $HOME/.kube/config
     ```
     - Cài đặt Pod network:
+    - **nếu bạn dùng Weave**
+    
     `kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"`
+    
+    - **Nếu bạn dùng Calico**
+    ```
+    kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml
+    kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/kubernetes-datastore/calico-networking/1.7/calico.yaml
+    ```
+    - Link tham khảo nè: https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/
+    
     - Copy các chứng chỉ và key mà `kubeadmin` vừa generate lên 2 node master còn lại
     
     `vim copy.sh`
