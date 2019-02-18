@@ -472,7 +472,7 @@ apt-mark hold kubelet kubeadm kubectl
       - "192.168.40.186"
     controlPlaneEndpoint: "192.168.40.186:6444"
     networking:
-    podSubnet: 192.168.0.0/16
+      podSubnet: 192.168.0.0/16
     ```
     - **Lưu ý: địa chỉ trong file config sẽ là địa chỉ của Virtal IP phần keepalived**
     - Tạo cluster:
