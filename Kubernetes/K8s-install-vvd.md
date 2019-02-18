@@ -524,7 +524,10 @@ apt-mark hold kubelet kubeadm kubectl
     ```
     
     `sh copy.sh`
+    - Hãy đảm bảo tất cả các pod đều đã được running thì mới chuyển sang các node khác để làm nhé!
     
+    `watch kubectl get pods --all-namespaces`
+
 - **Trên 2 node master còn lại**
     - **k8s-master2**:
         - Di chuyển các chứng chỉ và key vào thư mục `/etc/kubernetes/pki/` bằng cách:
@@ -558,6 +561,10 @@ apt-mark hold kubelet kubeadm kubectl
         
         `kubeadm join 192.168.40.186:6444 --token t9zkev.ns6r6od1oovlio2i --discovery-token-ca-cert-hash sha256:904629ae281ef47a9c8ddda6507a4d5812bfdf586ad73f8a039230715b2db8fa --experimental-control-plane`
         
+        - Nếu kết quả câu lệnh trên có error thì cũng không sao, cứ chờ và kiểm tra các node cho tới khi ready nhé
+        
+        `watch kubectl get nodes`
+        
     - **k8s-master3**:
         - Di chuyển các chứng chỉ và key vào thư mục `/etc/kubernetes/pki/` bằng cách:
         
@@ -589,6 +596,11 @@ apt-mark hold kubelet kubeadm kubectl
         - Join các k8s-master3 vào cluster bằng cách sử dụng câu lệnh kết quả của `k8s-master`, thêm option vào sau câu lênh đó: `--experimental-control-plane`
         
         `kubeadm join 192.168.40.186:6444 --token t9zkev.ns6r6od1oovlio2i --discovery-token-ca-cert-hash sha256:904629ae281ef47a9c8ddda6507a4d5812bfdf586ad73f8a039230715b2db8fa --experimental-control-plane`
+        
+        - Nếu kết quả câu lệnh trên có error thì cũng không sao, cứ chờ và kiểm tra các node cho tới khi ready nhé
+        
+        `watch kubectl get nodes`
+        
 - Chờ khoảng 30 giây, kiểm tra lại cluster các node master bằng lệnh:
 ```
 kubectl get nodes -n kube-system
