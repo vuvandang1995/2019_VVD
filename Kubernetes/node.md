@@ -8,6 +8,18 @@
     
     `kubeadm init --apiserver-advertise-address 192.168.40.180 --pod-network-cidr=192.168.0.0/16`
     
+    - hoặc nếu dùng file config
+    ```
+    apiVersion: kubeadm.k8s.io/v1beta1
+    kind: ClusterConfiguration
+    kubernetesVersion: stable
+    apiServer:
+      certSANs:
+      - "192.168.40.186"
+    controlPlaneEndpoint: "192.168.40.186:6444"
+    networking:
+      podSubnet: 192.168.0.0/16
+    ```
     - vì sao lại là `192.168.0.0/16`? bởi vì đó là dải khai báo mặc định trong file `calico.yaml`, nếu bạn sửa thành dải khác thì bạn cũng phải sửa trong file `calico.yaml`. Nếu dải `192.168.0.0/16` đã được sử dụng trong k8s cluster của bạn rồi thì phải đổi sang dải khác. Dải địa chỉ cho các service (`--service-cidr` - là 1 option trong lệnh kubeadm init ... , default là `10.96.0.0/12`) cũng không được trùng với `pod-network-cidr`.
     - Chi tiết xem ở đây nè: https://docs.projectcalico.org/v2.0/getting-started/kubernetes/installation/hosted/kubeadm/
 
