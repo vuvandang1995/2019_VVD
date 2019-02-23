@@ -15,7 +15,7 @@
 
 <img src="https://i.imgur.com/D9ib6jR.png">
 
-- Vấn đề ở đây là: Khi tạo 1 pod chưa 1 container:
+- Vấn đề ở đây là: Khi tạo 1 pod chứa 1 container:
   - Nếu mô hình dùng `Flannel`: exec vào container đó có thể ping được tới `Endpoints` của `API-server (kubernetes service)`, có thể `curl -k https://10.96.0.1:443/`
   - Nếu dùng `Calico`thì không làm được những việc trên
 - **Đó là lí do xảy ra lỗi như hình ở đầu bài viết. Do cơ chế hoạt động và mô hình mạng của calico và flannel khác nhau, cần tìm hiểu kĩ hơn**
