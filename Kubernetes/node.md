@@ -32,4 +32,5 @@
   - Nếu dùng `Calico`thì không làm được những việc trên
 - **Đó là lí do xảy ra lỗi như hình ở đầu bài viết. Do cơ chế hoạt động và mô hình mạng của calico và flannel khác nhau, cần tìm hiểu kĩ hơn**
 
-  
+## Khi muốn biết thư mục volume mount với container nằm ở đâu trên host thì dùng lệnh `docker inspect container-id` để xem. 
+
