@@ -1,6 +1,6 @@
 - Cài rook-ceph với flannel thì bình thường, với calico thì sẽ gặp lỗi như sao ở pod `rook-ceph-operator`
 
-<img src="https://i.imgur.com/PEx39Fl.png">
+<img src="https://i.imgur.com/EpO3kPG.png">
 
 - Các yêu cầu khi bạn cài `Calico`
   - Phải thiết lập `podSubnet` là dải IP mà sẽ gán cho các pod sử dụng calico trước khi cài Calico bằng cách create file calico.yaml
