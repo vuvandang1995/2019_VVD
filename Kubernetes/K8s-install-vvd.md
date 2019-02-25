@@ -327,26 +327,6 @@
 
 `echo "net.ipv4.ip_nonlocal_bind=1" >> /etc/sysctl.conf`
 
-- Mở file config haproxy:
-
-`sudo vim /etc/haproxy/haproxy.cfg`
-
-- Thêm vào cuối file nội dung sau:
-```
-frontend kubernetes
-        bind 192.168.40.186:6444
-        option tcplog
-        mode tcp
-        default_backend kubernetes-master-nodes
-
-backend kubernetes-master-nodes
-        mode tcp
-        balance roundrobin
-        option tcp-check
-        server k8s-master 192.168.40.180:6443 check fall 3 rise 2
-        server k8s-master2 192.168.40.181:6443 check fall 3 rise 2
-        server k8s-master3 192.168.40.182:6443 check fall 3 rise 2
-```
 - Tạo file config keepalived trên `k8s-master`:
 
 `sudo vim /etc/keepalived/keepalived.conf`
@@ -434,11 +414,34 @@ vrrp_instance VI_1 {
   }
 }
 ```
-### Khởi động lại và bật dịch vụ haproxy-keepalived trên cả 3 node master
+### Khởi động lại và bật dịch vụ keepalived trên cả 3 node master
 ```
 sudo systemctl start keepalived
 sudo systemctl enable keepalived
 sudo systemctl restart keepalived
+```
+- Mở file config haproxy:
+
+`sudo vim /etc/haproxy/haproxy.cfg`
+
+- Thêm vào cuối file nội dung sau:
+```
+frontend kubernetes
+        bind 192.168.40.186:6444
+        option tcplog
+        mode tcp
+        default_backend kubernetes-master-nodes
+
+backend kubernetes-master-nodes
+        mode tcp
+        balance roundrobin
+        option tcp-check
+        server k8s-master 192.168.40.180:6443 check fall 3 rise 2
+        server k8s-master2 192.168.40.181:6443 check fall 3 rise 2
+        server k8s-master3 192.168.40.182:6443 check fall 3 rise 2
+```
+### Khởi động lại và bật dịch vụ haproxy trên cả 3 node master
+```
 sudo systemctl start haproxy
 sudo systemctl enable haproxy
 sudo systemctl restart haproxy
@@ -459,6 +462,12 @@ EOF
 apt-get update  -y
 apt-get install -y kubelet kubeadm kubectl
 apt-mark hold kubelet kubeadm kubectl
+```
+```
+systemctl enable docker.service
+systemctl start docker.service
+systemctl status docker.service
+systemctl enable kubelet.service 
 ```
 - **Trên node master đầu tiên (k8s-master)**
     - Tạo file `kubeadm-config.yaml`:
