@@ -438,8 +438,10 @@ vrrp_instance VI_1 {
 ```
 sudo systemctl start keepalived
 sudo systemctl enable keepalived
+sudo systemctl restart keepalived
 sudo systemctl start haproxy
 sudo systemctl enable haproxy
+sudo systemctl restart haproxy
 ```
 ## Cài các thành phần cho K8s
 - **Trên tất cả các node:**
