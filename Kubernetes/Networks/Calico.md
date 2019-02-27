@@ -1,0 +1,2 @@
+- Tham khảo video: https://www.facebook.com/dangtrinhnt/videos/598772787209628/
+- Sau khi xem video, bạn sẽ cơ bản hiểu Network bên trong K8s là như nào. Mở rộng hơn 1 chút, sẽ thấy Calico là plugin phổ biến hiện nay
