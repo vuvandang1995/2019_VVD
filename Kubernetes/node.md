@@ -48,7 +48,7 @@
 - https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/
 
 ## Để các pod trong Calico network có thể curl hay ping tới địa chỉ API-server
-- Chlệnh lệnh sau trên **tất cả các node worker**
+- Chlệnh lệnh sau trên **tất cả các node worker và các node master backup (nếu là mô hình nhiều node master)**
 
 `iptables -t nat -A POSTROUTING -o ens3 -s 192.168.2.0/24 -j MASQUERADE`
 
