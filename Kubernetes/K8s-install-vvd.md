@@ -495,7 +495,10 @@ systemctl enable kubelet.service
     ........
     kubeadm join 192.168.40.186:6444 --token t9zkev.ns6r6od1oovlio2i --discovery-token-ca-cert-hash sha256:904629ae281ef47a9c8ddda6507a4d5812bfdf586ad73f8a039230715b2db8fa
     ```
-    - **Lưu ý: Nhớ lưu câu lệnh kết quả bên trên lại**
+    - **Lưu ý: Nhớ lưu câu lệnh kết quả bên trên lại, nếu bạn lỡ chưa lưu thì dùng lệnh này để lấy lại:**
+    
+    `kubeadm token create --print-join-command`
+    
     - Khai báo biến môi trường cấu hình user admin cho K8s:
     ```
     mkdir -p $HOME/.kube
