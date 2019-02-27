@@ -47,3 +47,15 @@
 ## Cách tạo pod theo node worker chỉ định
 - https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/
 
+## Để các pod trong Calico network có thể curl hay ping tới địa chỉ API-server
+- Chlệnh lệnh sau trên **tất cả các node worker**
+
+`iptables -t nat -A POSTROUTING -o ens3 -s 192.168.2.0/24 -j MASQUERADE`
+
+- Trong đó:
+  - `ens3` là interface của worker node nằm trong dải vật lý với master node
+  - `192.168.2.0/24` là dải pod network mà node worker đó được Calico cấp
+
+<img src="https://i.imgur.com/B2ovwAH.png">
+
+- **Lưu ý: đây là mấu chốt để cài ceph là storage cho K8s với Calico network**
