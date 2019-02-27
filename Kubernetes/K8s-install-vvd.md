@@ -512,8 +512,8 @@ systemctl enable kubelet.service
     kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml
     kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/kubernetes-datastore/calico-networking/1.7/calico.yaml
     ```
-    - Link tham khảo nè: https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/
-    
+    - Link tham khảo cài Caloco nè: https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/
+    - Hoặc cài Calico full từ trang chủ nè: https://docs.projectcalico.org/v3.5/getting-started/kubernetes/
     - Copy các chứng chỉ và key mà `kubeadmin` vừa generate lên 2 node master còn lại
     
     `vim copy.sh`
