@@ -14,7 +14,7 @@
 <img src="https://i.imgur.com/B2ovwAH.png">
 
   - **B2:** pull git repo Rook về và làm theo hướng dẫn này nha. https://github.com/rook/rook/blob/master/Documentation/ceph-quickstart.md
-  - Đến khi nào kết quà được như này thì ok.
+  - Đến khi nào kết quà được như này thì ok nhé
   
 <img src="https://i.imgur.com/J77j6ZM.png">
 
