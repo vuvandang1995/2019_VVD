@@ -579,7 +579,7 @@ systemctl enable kubelet.service
         
         `watch kubectl get nodes`
         
-        - Nếu kết quả câu lệnh bên trên thấy trường roles của các master node thì chạy lệnh sau
+        - Nếu kết quả câu lệnh bên trên thấy trường roles của các master node là `<none>` thì chạy lệnh sau
         
         `kubectl label nodes <node-name> node-role.kubernetes.io/master=`
         
@@ -619,7 +619,7 @@ systemctl enable kubelet.service
         
         `watch kubectl get nodes`
         
-        - Nếu kết quả câu lệnh bên trên thấy trường roles của các master node thì chạy lệnh sau
+        - Nếu kết quả câu lệnh bên trên thấy trường roles của các master node là `<none>` thì chạy lệnh sau
         
         `kubectl label nodes <node-name> node-role.kubernetes.io/master=`
         
