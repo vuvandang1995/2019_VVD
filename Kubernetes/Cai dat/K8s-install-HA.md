@@ -506,6 +506,14 @@ systemctl enable kubelet.service
     sudo chown $(id -u):$(id -g) $HOME/.kube/config
     ```
     - Cài đặt Pod network:
+    - **Nếu bạn dùng Flannel**
+    
+        - Chạy trên tất cả các node lệnh sau:
+        
+        `sysctl net.bridge.bridge-nf-call-iptables=1`
+        
+    `kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be0084506e4ec919aa1c114638878db11b/Documentation/kube-flannel.yml`
+    
     - **nếu bạn dùng Weave**
     
     `kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"`
