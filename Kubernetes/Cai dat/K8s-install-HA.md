@@ -579,6 +579,10 @@ systemctl enable kubelet.service
         
         `watch kubectl get nodes`
         
+        - Nếu kết quả câu lệnh bên trên thấy trường roles của các master node thì chạy lệnh sau
+        
+        `kubectl label nodes <node-name> node-role.kubernetes.io/master=`
+        
     - **k8s-master3**:
         - Di chuyển các chứng chỉ và key vào thư mục `/etc/kubernetes/pki/` bằng cách:
         
@@ -614,6 +618,10 @@ systemctl enable kubelet.service
         - Nếu kết quả câu lệnh trên có error thì cũng không sao, cứ chờ và kiểm tra các node cho tới khi ready nhé
         
         `watch kubectl get nodes`
+        
+        - Nếu kết quả câu lệnh bên trên thấy trường roles của các master node thì chạy lệnh sau
+        
+        `kubectl label nodes <node-name> node-role.kubernetes.io/master=`
         
 - Chờ khoảng 30 giây, kiểm tra lại cluster các node master bằng lệnh:
 ```
