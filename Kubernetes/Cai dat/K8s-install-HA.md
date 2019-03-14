@@ -591,7 +591,9 @@ systemctl enable kubelet.service
         
         - Nếu kết quả câu lệnh bên trên thấy trường roles của các master node là `<none>` thì chạy lệnh sau
         
-        `kubectl label nodes <node-name> node-role.kubernetes.io/master=`
+        `kubectl label nodes <node-name> node-role.kubernetes.io/master=''`
+        
+        `kubectl taint nodes <node-name> node-role.kubernetes.io/master='':NoSchedule`
         
     - **k8s-master3**:
         - Di chuyển các chứng chỉ và key vào thư mục `/etc/kubernetes/pki/` bằng cách:
@@ -633,6 +635,8 @@ systemctl enable kubelet.service
         
         `kubectl label nodes <node-name> node-role.kubernetes.io/master=`
         
+        `kubectl taint nodes <node-name> node-role.kubernetes.io/master='':NoSchedule`
+        
 - Chờ khoảng 30 giây, kiểm tra lại cluster các node master bằng lệnh:
 ```
 kubectl get nodes -n kube-system
@@ -642,7 +646,7 @@ kubectl get nodes -n kube-system
 NAME          STATUS   ROLES    AGE     VERSION
 k8s-master    Ready    master   24m     v1.13.3
 k8s-master2   Ready    master   4m10s   v1.13.3
-k8s-master3   Ready    <none>   9m40s   v1.13.3
+k8s-master3   Ready    master   9m40s   v1.13.3
 ```
 - Kiểm tra cách thành phần K8s đã lên hay chưa?
 
