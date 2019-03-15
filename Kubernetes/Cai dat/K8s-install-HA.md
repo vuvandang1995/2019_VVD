@@ -473,7 +473,9 @@ systemctl enable kubelet.service
     - Tạo file `kubeadm-config.yaml`:
     
     `vim kubeadm-config.yaml`
-    
+  
+  - **Lưu ý: địa chỉ trong file config sẽ là địa chỉ của Virtal IP phần keepalived. Lưu ý thứ 2 là dòng podSubnet, 192.168.0.0/16 dùng cho Calico network, 10.244.0.0/16 dùng cho Flannel**
+  
     ```
     apiVersion: kubeadm.k8s.io/v1beta1
     kind: ClusterConfiguration
@@ -485,7 +487,7 @@ systemctl enable kubelet.service
     networking:
       podSubnet: 192.168.0.0/16
     ```
-    - **Lưu ý: địa chỉ trong file config sẽ là địa chỉ của Virtal IP phần keepalived**
+  
     - Tạo cluster:
     
     `kubeadm init --config=kubeadm-config.yaml`
@@ -689,7 +691,7 @@ weave-net-b86dt                       2/2     Running   1          2m12s
 NAME          STATUS   ROLES    AGE   VERSION
 k8s-master    Ready    master   65m   v1.13.3
 k8s-master2   Ready    master   44m   v1.13.3
-k8s-master3   Ready    <none>   50m   v1.13.3
+k8s-master3   Ready    m   50m   v1.13.3
 k8s-node1     Ready    <none>   38m   v1.13.3
 k8s-node2     Ready    <none>   38m   v1.13.3
 k8s-node3     Ready    <none>   38m   v1.13.3
