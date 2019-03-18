@@ -107,3 +107,6 @@ spec:
 ```
 
 - rồi reboot lại cluster nhé. ahihi
+
+## Link hay : https://github.com/feiskyer/kubernetes-handbook/blob/master/en/addons/monitor.md
+
