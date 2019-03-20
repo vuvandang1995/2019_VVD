@@ -31,5 +31,5 @@
 
 - Cài Client (helm)
 
-`curl https://raw.githubusercontent.com/helm/helm/master/scripts/get | sudo bash`
+  `curl https://raw.githubusercontent.com/helm/helm/master/scripts/get | sudo bash`
 
