@@ -1,5 +1,5 @@
 ## Cài đặt EFK
-- **Lưu ý: dùng Helm để cài nhé**
+- **Lưu ý: dùng (Helm)[https://github.com/vuvandang1995/2019_VVD/blob/master/Kubernetes/Heml.md] để cài nhé**
 ```
 kubectl create ns kube-logging
 helm install --name log-elasticsearch stable/elasticsearch --namespace kube-logging --set master.persistence.enabled=false --set data.persistence.enabled=false
