@@ -54,3 +54,7 @@ spec:
 systemctl restart kubelet.service
 systemctl restart docker.serivice
 ```
+- Test Metric-server
+
+`kubectl top node`
+
