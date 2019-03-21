@@ -2,6 +2,8 @@
 - https://www.cnblogs.com/vincenshen/p/9638162.html
 - Hoặc chạy duy nhất file này:
 
+`vim heapster.yaml`
+
 ```
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -144,3 +146,5 @@ subjects:
 <img src="https://i.imgur.com/0UdSbFl.png">
 
 - Sau đó dùng token bên trên và 1 trong các địa chỉ IP của các node trong cụm Cluster để đăng nhập và dashboard, nhớ là https nhé: https://192.168.40.182:30324
+
+
