@@ -1,5 +1,9 @@
 - Tạo project: `django-admin startproject openid`
-- Tạo app: `django-admin startapp superadmin`
+- Tạo app:
+```
+cd openid
+django-admin startapp superadmin
+```
 - Tạo class user trong file `models.py` trong app vừa tạo
 
 [models.py](https://github.com/vuvandang1995/2019_VVD/blob/master/Django/config/models.py)
