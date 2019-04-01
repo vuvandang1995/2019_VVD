@@ -60,7 +60,6 @@ send_email.delay(mail_subject, message, user.email)
     `sudo vim /home/openid/OpenID_MDT/openid/celery_env_file`
     
 - [celery_env_file](https://github.com/vuvandang1995/2019_VVD/blob/master/Django/config/celery_env_file)
-- **Note: Change the file above to suit you**
     
     - Create folder
     
@@ -72,4 +71,5 @@ send_email.delay(mail_subject, message, user.email)
     
 - [celery.service](https://github.com/vuvandang1995/2019_VVD/blob/master/Django/config/celery.service)
     
-    
+- **Note: Change the files above to suit you**
+
