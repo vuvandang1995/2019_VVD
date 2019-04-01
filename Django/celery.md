@@ -25,7 +25,7 @@ CELERY_RESULT_BACKEND = 'redis://localhost'
 
 ### 2. Create `celery.py` file in same folder with `settings.py`
 
-[celery.py]()
+[celery.py](https://github.com/vuvandang1995/2019_VVD/blob/master/Django/config/celery.py)
 
 - Change content in 4th and 6th lines to your-project-name
 
@@ -34,7 +34,7 @@ CELERY_RESULT_BACKEND = 'redis://localhost'
 - example:
   - Create `tasks.py` in your app
   
-  [tasks.py]()
+  [tasks.py](https://github.com/vuvandang1995/2019_VVD/blob/master/Django/config/tasks.py)
   
 ### Use Celery tasks
 
