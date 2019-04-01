@@ -48,4 +48,24 @@ message = render_to_string('client/active_acc.html', {
 })
 send_email.delay(mail_subject, message, user.email)
 ```
+## Run Celery
+### With command
 
+`celery worker -A openid worker -l info`
+
+### With systemd
+    - Create celery environment file
+    
+    [celery_env_file](https://github.com/vuvandang1995/2019_VVD/blob/master/Django/config/celery_env_file)
+    
+    - Create folder
+    
+    `mkdir /var/run/celery /var/log/celery`
+    
+    - Create service
+    
+    `sudo vim /etc/systemd/system/celery.service`
+    
+    [celery.service](https://github.com/vuvandang1995/2019_VVD/blob/master/Django/config/celery.service)
+    
+    
