@@ -48,13 +48,14 @@ message = render_to_string('client/active_acc.html', {
 })
 send_email.delay(mail_subject, message, user.email)
 ```
+
 ## Run Celery
 ### With command
 
 `celery worker -A openid worker -l info`
 
 ### With systemd
-    - Create celery environment file
+- Create celery environment file
     
     `sudo vim /home/openid/OpenID_MDT/openid/celery_env_file`
     
@@ -64,7 +65,7 @@ send_email.delay(mail_subject, message, user.email)
     
     `mkdir /var/run/celery /var/log/celery`
     
-    - Create service
+- Create service
     
     `sudo vim /etc/systemd/system/celery.service`
     
