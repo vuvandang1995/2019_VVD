@@ -40,8 +40,6 @@ CELERY_RESULT_BACKEND = 'redis://localhost'
   
   [tasks.py](https://github.com/vuvandang1995/2019_VVD/blob/master/Django/config/tasks.py)
   
-<img src="">
-  
 ### Use Celery tasks
 
 ```
