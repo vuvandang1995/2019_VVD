@@ -56,7 +56,7 @@ send_email.delay(mail_subject, message, user.email)
 ### With systemd
     - Create celery environment file
     
-    [celery_env_file](https://github.com/vuvandang1995/2019_VVD/blob/master/Django/config/celery_env_file)
+- [celery_env_file](https://github.com/vuvandang1995/2019_VVD/blob/master/Django/config/celery_env_file)
     
     - Create folder
     
@@ -66,6 +66,6 @@ send_email.delay(mail_subject, message, user.email)
     
     `sudo vim /etc/systemd/system/celery.service`
     
-    [celery.service](https://github.com/vuvandang1995/2019_VVD/blob/master/Django/config/celery.service)
+- [celery.service](https://github.com/vuvandang1995/2019_VVD/blob/master/Django/config/celery.service)
     
     
