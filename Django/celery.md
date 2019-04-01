@@ -23,18 +23,24 @@ CELERY_BROKER_URL = 'redis://localhost'
 CELERY_RESULT_BACKEND = 'redis://localhost'
 ```
 
-### 2. Create `celery.py` file in same folder with `settings.py`
+### 2. Next, create a `__init__.py` file in your Project root directory and add the following code to it:
+
+[__init__.py](https://github.com/vuvandang1995/2019_VVD/blob/master/Django/config/__init__.py)
+
+### 3. Create `celery.py` file in same folder with `settings.py`
 
 [celery.py](https://github.com/vuvandang1995/2019_VVD/blob/master/Django/config/celery.py)
 
 - Change content in 4th and 6th lines to your-project-name
 
-### 3. Build Celery tasks
+### 4. Build Celery tasks
 
 - example:
   - Create `tasks.py` in your app
   
   [tasks.py](https://github.com/vuvandang1995/2019_VVD/blob/master/Django/config/tasks.py)
+  
+<img src="">
   
 ### Use Celery tasks
 
