@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mticket
+  labels:
+    name: mticket
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mticket
+    spec:
+      containers:
+      - image: mysql:5.7
+        args:
+          - "--ignore-db-dir=lost+found"
+        name: db
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: "123456"
+          - name: MYSQL_DATABASE
+            value: "openid"
+        ports:
+        - containerPort: 3306
+      - name: rd
+        image: redis:2.8
+        ports:
+        - containerPort: 6379
+      - name: web
+        #image: gcr.io/google-samples/kubernetes-bootcamp:v1
+        image: python:3
+        command: ["/bin/bash","-c","cd /home/openid && /usr/local/bin/gunicorn --bind 127.0.0.1:8000 openid.wsgi:application"]
+        volumeMounts:
+        - name: code
+          mountPath: /home/openid
+      volumes:
+      - hostPath:
+          path: /root/OpenID_MDT/openid
+          type: Directory
+        name: code
