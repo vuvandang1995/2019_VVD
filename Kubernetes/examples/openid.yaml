@@ -61,7 +61,7 @@ spec:
         - containerPort: 6379
       - name: gunicorn
         #image: gcr.io/google-samples/kubernetes-bootcamp:v1
-        image: python:3
+        image: python:3.5
         ports:
         - containerPort: 8000
         command: ["/bin/bash","-c","apt-get update && apt-get install -y vim telnet lsof && cd /home/openid && pip3 install -r requirements.txt && python3 manage.py migrate && /usr/local/bin/gunicorn --bind 127.0.0.1:8000 openid.wsgi:application"]
@@ -70,7 +70,7 @@ spec:
           mountPath: /home/openid
       - name: daphne
         #image: gcr.io/google-samples/kubernetes-bootcamp:v1
-        image: python:3
+        image: python:3.5
         ports:
         - containerPort: 8001
         command: ["/bin/bash","-c","apt-get update && apt-get install -y vim telnet lsof && cd /home/openid && pip3 install -r requirements.txt && /usr/local/bin/daphne -b 127.0.0.1 -p 8001 openid.asgi:application"]
