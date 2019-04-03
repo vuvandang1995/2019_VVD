@@ -51,6 +51,8 @@ spec:
       - image: mysql:5.7
         args:
           - "--ignore-db-dir=lost+found"
+          - "--character-set-server=utf8mb4"
+          - "--collation-server=utf8mb4_unicode_ci"
         name: mysql
         env:
           - name: MYSQL_ROOT_PASSWORD
