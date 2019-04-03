@@ -1,4 +1,71 @@
 apiVersion: v1
+kind: Service
+metadata:
+  name: openid-mysql
+  labels:
+    app: openid
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: openid
+    tier: mysql
+  clusterIP: None
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  labels:
+    app: openid
+spec:
+  storageClassName: rook-ceph-block
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+      
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: openid-mysql
+  labels:
+    app: openid
+spec:
+#   replicas: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: openid
+        tier: mysql
+    spec:
+      containers:
+      - image: mysql:5.7
+        args:
+          - "--ignore-db-dir=lost+found"
+        name: mysql
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: "123456"
+          - name: MYSQL_DATABASE
+            value: "openid"
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
+          
+---
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: nginx-config
@@ -33,28 +100,17 @@ data:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: mticket
+  name: openid
   labels:
-    name: mticket
+    name: openid
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: mticket
+        app: openid
     spec:
       containers:
-      - image: mysql:5.7
-        args:
-          - "--ignore-db-dir=lost+found"
-        name: db
-        env:
-          - name: MYSQL_ROOT_PASSWORD
-            value: "123456"
-          - name: MYSQL_DATABASE
-            value: "openid"
-        ports:
-        - containerPort: 3306
       - name: rd
         image: redis:2.8
         ports:
@@ -113,7 +169,7 @@ kind: Service
 apiVersion: v1
 metadata:
   # Unique key of the Service instance
-  name: mticketsv
+  name: openidsv
 spec:
   ports:
     # Accept traffic sent to port 80
@@ -123,7 +179,7 @@ spec:
   selector:
     # Loadbalance traffic across Pods matching
     # this label selector
-    app: mticket
+    app: openid
   # Create an HA proxy in the cloud provider
   # with an External IP address - *Only supported
   # by some cloud providers*
