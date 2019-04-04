@@ -27,7 +27,7 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 10Gi
+      storage: 5Gi
       
 ### Create Deployment openid-mysql
 ---
@@ -38,7 +38,6 @@ metadata:
   labels:
     app: openid
 spec:
-#   replicas: 2
   strategy:
     type: Recreate
   template:
