@@ -1,3 +1,4 @@
+### Create openid-mysql service
 apiVersion: v1
 kind: Service
 metadata:
@@ -6,26 +7,30 @@ metadata:
     app: openid
 spec:
   ports:
-  - port: 3306
-  clusterIP: None
+    - port: 3306
   selector:
     app: openid
     tier: mysql
+  clusterIP: None
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: openid-mysql
+  labels:
+    app: openid
 spec:
   selector:
     matchLabels:
       app: openid # has to match .spec.template.metadata.labels
+      tier: mysql
   serviceName: "openid-mysql"
-  replicas: 2 # by default is 1
+  replicas: 1 # by default is 1
   template:
     metadata:
       labels:
         app: openid # has to match .spec.selector.matchLabels
+        tier: mysql
     spec:
       terminationGracePeriodSeconds: 10
       containers:
@@ -43,14 +48,14 @@ spec:
         ports:
         - containerPort: 3306
         volumeMounts:
-        - name: mysql-persistent-storage
+        - name: mysql-storage
           mountPath: /var/lib/mysql
   volumeClaimTemplates:
   - metadata:
-      name: mysql-persistent-storage
+      name: mysql-storage
     spec:
       accessModes: [ "ReadWriteOnce" ]
       storageClassName: "rook-ceph-block"
       resources:
         requests:
-          storage: 10Gi
+          storage: 5Gi
