@@ -1,0 +1,28 @@
+apiVersion: mysql.oracle.com/v1alpha1
+kind: Cluster
+metadata:
+  name: mysql-cluster-with-volume
+spec:
+  members: 1
+  rootPasswordSecret:
+    name: mysql-root-user-secret
+  volumeClaimTemplate:
+    metadata:
+      name: data
+    spec:
+      storageClassName: rook-ceph-block
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: 5Gi
+  backupVolumeClaimTemplate:
+    metadata:
+      name: backup-data
+    spec:
+      storageClassName: rook-ceph-block
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: 5Gi
