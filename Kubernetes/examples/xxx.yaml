@@ -6,6 +6,7 @@ spec:
   members: 1
   rootPasswordSecret:
     name: mysql-root-user-secret
+  
   volumeClaimTemplate:
     metadata:
       name: data
