@@ -74,6 +74,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: nginx-config
+  namespace: my-namespace
 data:
   default.conf: |
     server {
@@ -109,6 +110,7 @@ metadata:
   name: openid
   labels:
     name: openid
+  namespace: my-namespace
 spec:
   replicas: 1
   template:
@@ -177,6 +179,7 @@ apiVersion: v1
 metadata:
   # Unique key of the Service instance
   name: openidsv
+  namespace: my-namespace
 spec:
   ports:
     # Accept traffic sent to port 80
