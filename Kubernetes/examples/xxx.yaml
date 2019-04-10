@@ -1,7 +1,7 @@
 apiVersion: mysql.oracle.com/v1alpha1
 kind: Cluster
 metadata:
-  name: mysql-cluster-with-volume
+  name: openid-mysql
 spec:
   members: 1
   rootPasswordSecret:
