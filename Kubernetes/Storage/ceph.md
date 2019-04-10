@@ -5,6 +5,8 @@
 
 `cd rook/cluster/examples/kubernetes/ceph`
 
+`kubectl create -f common.yaml`
+
 `kubectl create -f operator.yaml`
 
 - Wait until container all running
