@@ -123,6 +123,26 @@ spec:
         image: redis:2.8
         ports:
         - containerPort: 6379
+#       - name: mysqlrouter
+#         image: mysql/mysql-router:8.0.12
+#         env:
+#         - name: MYSQL_PASSWORD
+#           valueFrom:
+#             secretKeyRef:
+#               name: mysql-root-user-secret
+#               key: password
+#         - name: MYSQL_USER
+#           value: root
+#         - name: MYSQL_PORT
+#           value: "3306"
+#         - name: MYSQL_HOST
+#           value: openid-mysql-0.openid-mysql
+#         - name: MYSQL_INNODB_NUM_MEMBERS
+#           value: "2"
+#         command:
+#         - "/bin/bash"
+#         - "-cx"
+#         - "exec /run.sh mysqlrouter"
       - name: gunicorn
         #image: gcr.io/google-samples/kubernetes-bootcamp:v1
         image: python:3.5
