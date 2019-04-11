@@ -1,9 +1,32 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: mysql-config
+  namespace: my-namespace
+data:
+  my.cnf: |-
+    [mysqld]
+    default_authentication_plugin=mysql_native_password
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-root-user-secret
+  namespace: my-namespace
+data:
+  password: "123456"
+
+---
 apiVersion: mysql.oracle.com/v1alpha1
 kind: Cluster
 metadata:
   name: openid-mysql
+  namespace: my-namespace
 spec:
-  members: 1
+  members: 2
+  config:
+    name: mysql-config
   rootPasswordSecret:
     name: mysql-root-user-secret
   
@@ -17,6 +40,7 @@ spec:
       resources:
         requests:
           storage: 5Gi
+          
   backupVolumeClaimTemplate:
     metadata:
       name: backup-data
