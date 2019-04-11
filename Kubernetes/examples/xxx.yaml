@@ -15,7 +15,7 @@ metadata:
   name: mysql-root-user-secret
   namespace: my-namespace
 data:
-  password: "123456"
+  password: MTIzNDU2Cg==
 
 ---
 apiVersion: mysql.oracle.com/v1alpha1
