@@ -1,0 +1,180 @@
+### Create openid-mysql service
+apiVersion: v1
+kind: Service
+metadata:
+  name: openid-mysql
+  labels:
+    app: openid
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: openid
+    tier: mysql
+  clusterIP: None
+
+### Create volume for openid-mysql
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  labels:
+    app: openid
+spec:
+  storageClassName: rook-ceph-block
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+      
+### Create Deployment openid-mysql
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: openid-mysql
+  labels:
+    app: openid
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: openid
+        tier: mysql
+    spec:
+      containers:
+      - image: mysql:5.7
+        args:
+          - "--ignore-db-dir=lost+found"
+          - "--character-set-server=utf8mb4"
+          - "--collation-server=utf8mb4_unicode_ci"
+        name: mysql
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: "123456"
+          - name: MYSQL_DATABASE
+            value: "openid"
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
+
+---
+### Create configmap for nginx
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  default.conf: |
+    server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        client_max_body_size 10M;
+        location = /favicon.ico { access_log off; log_not_found off; }
+
+
+        location /static/ {
+                    root /home/openid/superadmin;
+            }
+
+        location / {
+                proxy_pass_header Server;
+                proxy_set_header Host $http_host;
+                proxy_pass http://127.0.0.1:8000;
+        }
+
+        location /ws/ {
+                proxy_pass http://127.0.0.1:8001;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
+        }	
+    }
+
+### Create Deployment openid web
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: openid
+  labels:
+    name: openid
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: openid
+    spec:
+      containers:
+      - name: rd
+        image: redis:2.8
+        ports:
+        - containerPort: 6379
+      - name: gunicorn
+        image: dangvv1995/coreopenid
+        ports:
+        - containerPort: 8000
+        command: ["/bin/bash","-c", "cp -a /home/openid/superadmin /home/share && python3 manage.py migrate && /usr/local/bin/gunicorn --bind 127.0.0.1:8000 openid.wsgi:application"]
+        volumeMounts:
+        - name: code
+          mountPath: /home/share
+      - name: daphne
+        image: dangvv1995/coreopenid
+        ports:
+        - containerPort: 8001
+        command: ["/bin/bash","-c","/usr/local/bin/daphne -b 127.0.0.1 -p 8001 openid.asgi:application"]
+      - name: celery
+        image: dangvv1995/coreopenid
+        command: ["/bin/bash","-c","celery -A openid worker -l info"]
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: code
+          mountPath: /home/openid
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d
+      initContainers:
+      - name: nginx-init
+        image: nginx
+        command: ["/bin/bash","-c","apt-get update && apt-get install -y curl"]
+      volumes:
+      - name: code
+        flexVolume:
+          driver: ceph.rook.io/rook
+          fsType: ceph
+          options:
+            fsName: myfs
+            clusterNamespace: rook-ceph
+      - name: nginx-config
+        configMap:
+          name: nginx-config
+
+### Create service openidsv
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: openidsv
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  selector:
+    app: openid
+  type: NodePort
+  
