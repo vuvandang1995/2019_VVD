@@ -1,0 +1,55 @@
+stages:
+  - test
+  - build
+  - deploy
+
+test:
+  image: python:3.5.2
+  stage: test
+  cache:
+    key: pip-cache
+    paths: [ .pip-openid ]
+  services:
+  - mysql:5.7
+  variables:
+    MYSQL_ROOT_PASSWORD: "123456"
+    MYSQL_DATABASE: openid
+    
+    DATABASE_HOST: mysql
+    DATABASE_NAME: openid
+    DATABASE_USER: root
+    DATABASE_PASSWORD: "123456"
+    DATABASE_PORT: 3306
+  
+  script:
+  - pip --cache-dir=.pip-openid install -r requirements.txt
+  - cd openid
+  - python manage.py test superadmin
+  only:
+  - unittest
+  when: manual
+
+build:
+  image: docker:stable
+  
+  stage: build
+  
+  script:
+    - docker login -u dangvv1995 -p $DOCKERHUB_PASSS
+    - docker build -t coreopenid .
+    - docker tag coreopenid $GUNICORN_OPENID_IMAGE:$CI_COMMIT_REF_NAME
+    - docker push $GUNICORN_OPENID_IMAGE:$CI_COMMIT_REF_NAME
+  when: manual
+
+  
+deploy:
+  image: ubuntu:16.04
+  
+  before_script:
+    - mkdir -p $HOME/.kube
+    - sudo cp -i admin.conf $HOME/.kube/config
+    - sudo chown $(id -u):$(id -g) $HOME/.kube/config
+  stage: deploy
+  script:
+    - kubectl create -f openid_CICD.yaml
+  when: manual
