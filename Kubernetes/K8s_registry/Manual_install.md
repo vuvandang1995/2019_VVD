@@ -272,7 +272,7 @@ To install Harbor with chart repository service, add a parameter when you run ``
 ```
 - Sau đó, update lại docker-compose
 
-  - `docker-compose donw -v`
+  - `docker-compose down -v`
   - `docker-compose up -d`
 
 ### Managing Harbor's lifecycle
