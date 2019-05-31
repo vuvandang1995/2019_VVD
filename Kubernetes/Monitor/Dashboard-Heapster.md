@@ -78,7 +78,8 @@ spec:
       containers:
       - name: heapster
         # image: k8s.gcr.io/heapster-amd64:v1.5.4 将默认google的官方镜像替换为阿里云镜像，否则你懂得
-        image: registry.cn-hangzhou.aliyuncs.com/google_containers/heapster-amd64:v1.5.4
+        # image: registry.cn-hangzhou.aliyuncs.com/google_containers/heapster-amd64:v1.5.4
+        image: k8s.gcr.io/heapster-amd64:v1.5.4
         command:
         - /heapster
         - --source=kubernetes:https://kubernetes.default?useServiceAccount=true&kubeletHttps=true&kubeletPort=10250&insecure=true
