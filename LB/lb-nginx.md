@@ -20,3 +20,5 @@
   }
   ```
 - Đọc config chắc là hiểu được ngay nhỉ =))
+- Sau đó xóa file `/etc/nginx/sites-enabled/default` (để ngắt listen trên port 80)
+- restart nginx
