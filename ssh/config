@@ -1,0 +1,20 @@
+Host bastion.k8s.teko
+    Hostname 35.226.227.243
+
+Host master-1.k8s.teko
+    Hostname 10.148.0.8
+    # dong nay co nghia la ssh vao bastion.k8s.teko xong ssh tiep vao master-1.k8s.teko. hay khong =))
+    ProxyCommand ssh bastion.k8s.teko -W %h:%p
+
+Host master-2.k8s.teko
+    Hostname 10.148.0.9
+    ProxyCommand ssh bastion.k8s.teko -W %h:%p
+
+Host master-3.k8s.teko
+    Hostname 10.148.0.10
+    ProxyCommand ssh bastion.k8s.teko -W %h:%p
+
+Host worker-1.k8s.teko
+    Hostname 10.148.0.11
+    ProxyCommand ssh bastion.k8s.teko -W %h:%p
+    
