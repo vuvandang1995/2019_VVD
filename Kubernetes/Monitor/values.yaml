@@ -120,13 +120,15 @@ alertmanager:
       - channel: '#monitor'
         text: "<!channel> \nsummary: {{ .CommonAnnotations.summary }}\ndescription: {{ .CommonAnnotations.message }}"
 
+
+
   ## Alertmanager template files to format alerts
   ## ref: https://prometheus.io/docs/alerting/notifications/
   ##      https://prometheus.io/docs/alerting/notification_examples/
   ##
   templateFiles: {}
   #
-  # An example template:
+  ## An example template:
   #   template_1.tmpl: |-
   #       {{ define "cluster" }}{{ .ExternalURL | reReplaceAll ".*alertmanager\\.(.*)" "$1" }}{{ end }}
   #
@@ -147,6 +149,7 @@ alertmanager:
 
     annotations:
       kubernetes.io/ingress.class: "nginx"
+      kubernetes.io/tls-acme: "true"
 
     labels: {}
 
@@ -163,10 +166,10 @@ alertmanager:
     ## TLS configuration for Alertmanager Ingress
     ## Secret must be manually created in the namespace
     ##
-    tls: []
-    # - secretName: alertmanager-general-tls
-    #   hosts:
-    #   - alertmanager.example.com
+    tls:
+      - secretName: alertmanager-general-tls
+        hosts:
+        - alert.dang.kites.rocks
 
   ## Configuration for Alertmanager service
   ##
@@ -377,7 +380,7 @@ grafana:
     ##
     annotations:
       kubernetes.io/ingress.class: "nginx"
-      # kubernetes.io/tls-acme: "true"
+      kubernetes.io/tls-acme: "true"
 
     ## Labels to be added to the Ingress
     ##
@@ -397,10 +400,10 @@ grafana:
     ## TLS configuration for grafana Ingress
     ## Secret must be manually created in the namespace
     ##
-    tls: []
-    # - secretName: grafana-general-tls
-    #   hosts:
-    #   - grafana.example.com
+    tls:
+      - secretName: grafana-general-tls
+        hosts:
+        - grafana.dang.kites.rocks
 
   sidecar:
     dashboards:
@@ -528,6 +531,28 @@ kubelet:
     # 	relabel configs to apply to samples before ingestion.
     ##
     cAdvisorRelabelings: []
+    # - sourceLabels: [__meta_kubernetes_pod_node_name]
+    #   separator: ;
+    #   regex: ^(.*)$
+    #   target_label: nodename
+    #   replacement: $1
+    #   action: replace
+
+    metricRelabelings: []
+    # - sourceLabels: [__name__, image]
+    #   separator: ;
+    #   regex: container_([a-z_]+);
+    #   replacement: $1
+    #   action: drop
+    # - sourceLabels: [__name__]
+    #   separator: ;
+    #   regex: container_(network_tcp_usage_total|network_udp_usage_total|tasks_state|cpu_load_average_10s)
+    #   replacement: $1
+    #   action: drop
+
+    # 	relabel configs to apply to samples before ingestion.
+    ##
+    relabelings: []
     # - sourceLabels: [__meta_kubernetes_pod_node_name]
     #   separator: ;
     #   regex: ^(.*)$
@@ -963,15 +988,15 @@ prometheusOperator:
   ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
   ##
   affinity: {}
-  # nodeAffinity:
-  #   requiredDuringSchedulingIgnoredDuringExecution:
-  #     nodeSelectorTerms:
-  #     - matchExpressions:
-  #       - key: kubernetes.io/e2e-az-name
-  #         operator: In
-  #         values:
-  #         - e2e-az1
-  #         - e2e-az2
+    # nodeAffinity:
+    #   requiredDuringSchedulingIgnoredDuringExecution:
+    #     nodeSelectorTerms:
+    #     - matchExpressions:
+    #       - key: kubernetes.io/e2e-az-name
+    #         operator: In
+    #         values:
+    #         - e2e-az1
+    #         - e2e-az2
 
   securityContext:
     runAsNonRoot: true
@@ -981,7 +1006,7 @@ prometheusOperator:
   ##
   image:
     repository: quay.io/coreos/prometheus-operator
-    tag: v0.30.0
+    tag: v0.30.1
     pullPolicy: IfNotPresent
 
   ## Configmap-reload image to use for reloading configmaps
@@ -994,7 +1019,7 @@ prometheusOperator:
   ##
   prometheusConfigReloaderImage:
     repository: quay.io/coreos/prometheus-config-reloader
-    tag: v0.30.0
+    tag: v0.30.1
 
   ## Set the prometheus config reloader side-car CPU limit. If unset, uses the prometheus-operator project default
   ##
@@ -1055,13 +1080,6 @@ prometheus:
 
     sessionAffinity: ""
 
-  rbac:
-    ## Create role bindings in the specified namespaces, to allow Prometheus monitoring
-    ## a role binding in the release namespace will always be created.
-    ##
-    roleNamespaces:
-      - kube-system
-
   ## Configure pod disruption budgets for Prometheus
   ## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/#specifying-a-poddisruptionbudget
   ## This configuration is immutable once created and will require the PDB to be deleted to be changed
@@ -1076,6 +1094,7 @@ prometheus:
     enabled: true
     annotations:
       kubernetes.io/ingress.class: "nginx"
+      kubernetes.io/tls-acme: "true"
     labels: {}
 
     ## Hostnames.
@@ -1094,10 +1113,10 @@ prometheus:
     ## TLS configuration for Prometheus Ingress
     ## Secret must be manually created in the namespace
     ##
-    tls: []
-      # - secretName: prometheus-general-tls
-      #   hosts:
-      #     - prometheus.example.com
+    tls:
+      - secretName: prometheus-general-tls
+        hosts:
+        - prometheus.dang.kites.rocks
 
   serviceMonitor:
     ## Scrape interval. If not set, the Prometheus default scrape interval is used.
@@ -1174,6 +1193,22 @@ prometheus:
     ## External labels to add to any time series or alerts when communicating with external systems
     ##
     externalLabels: {}
+
+    ## Name of the external label used to denote replica name
+    ##
+    replicaExternalLabelName: ""
+
+    ## If true, the Operator won't add the external label used to denote replica name
+    ##
+    replicaExternalLabelNameClear: false
+
+    ## Name of the external label used to denote Prometheus instance name
+    ##
+    prometheusExternalLabelName: ""
+
+    ## If true, the Operator won't add the external label used to denote Prometheus instance name
+    ##
+    prometheusExternalLabelNameClear: false
 
     ## External URL at which Prometheus will be reachable.
     ##
