@@ -15,3 +15,6 @@
 
 ## Link hay : https://github.com/feiskyer/kubernetes-handbook/blob/master/en/addons/monitor.md
 
+# Xoá node khỏi K8s
+- `kubectl drain <node-name> --ignore-daemonsets --delete-local-data`
+- `kubectl delete node <node-name>`
