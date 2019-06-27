@@ -18,3 +18,4 @@
 # Xoá node khỏi K8s
 - `kubectl drain <node-name> --ignore-daemonsets --delete-local-data`
 - `kubectl delete node <node-name>`
+- Khi `kubeadm reset`,cần xóa thư mục `~/.kube` và `/var/lib/etcd`
