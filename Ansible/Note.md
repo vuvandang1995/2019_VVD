@@ -3,4 +3,4 @@
 
 Trong đó các vị trí các file như thế này:
 
-![ansible1](../images/ansible1.png)
+![ansible1](../ansible1.png)
