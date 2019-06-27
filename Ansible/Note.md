@@ -3,4 +3,4 @@
 
 Trong đó các vị trí các file như thế này:
 
-![topology](../images/ansible1.png)
+![ansible1](../images/ansible1.png)
