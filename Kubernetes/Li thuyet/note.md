@@ -15,7 +15,14 @@
 
 ## Link hay : https://github.com/feiskyer/kubernetes-handbook/blob/master/en/addons/monitor.md
 
-# Xoá node khỏi K8s
-- `kubectl drain <node-name> --ignore-daemonsets --delete-local-data`
-- `kubectl delete node <node-name>`
-- Khi `kubeadm reset`,cần xóa thư mục `~/.kube` và `/var/lib/etcd`
+
+## Các bước reset và re-install 1 cụm k8s
+- b1:
+  - `kubectl drain <node-name> --ignore-daemonsets --delete-local-data`
+  - `kubectl delete node <node-name>`
+- b2:
+  - Khi `kubeadm reset`,cần xóa thư mục `~/.kube` và `/var/lib/etcd`
+  
+## Delete các thứ không dùng đến trong docker
+`docker system prune -a --volumes`
+
