@@ -115,3 +115,44 @@ spec:
           serviceName: echoserver
           servicePort: http
 ```
+## Tạo file config và cấp quyền cho user truy cập vào k8s
+- Bài toán: Cung cấp file config kubectl cho Dev để truy cập vào cụm k8s nhưng với quyền chỉ thao tác với `configmaps`trên namespace `identity-service`
+B1: Chạy script như hướng dẫn: https://github.com/dangvv-teko/flask_app/blob/master/K8s/README.md
+B2: Tạo role và rolebinding
+
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: identity-decision-maker
+  namespace: identity-service
+rules:
+- apiGroups: 
+  - ""
+  resources:  
+  - configmaps
+  resourceNames:
+  - decisions
+  - oathkeeper
+  verbs: 
+  - create
+  - get
+  - watch
+  - update
+  - patch
+  - delete
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: identity-decision-maker
+  namespace: identity-service
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: identity-decision-maker
+subjects:
+- kind: ServiceAccount
+  name: identity-decision-maker
+  namespace: identity-service
+```
