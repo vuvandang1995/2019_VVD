@@ -156,3 +156,5 @@ subjects:
   name: identity-decision-maker
   namespace: identity-service
 ```
+B3: test
+<img src="https://i.imgur.com/Wq2bx4d.png">
