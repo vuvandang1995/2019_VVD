@@ -36,3 +36,10 @@ sudo rm /etc/apparmor.d/docker
 sudo groupdel docker
 sudo rm -rf /var/run/docker.sock
 ```
+
+## remove interface calico
+`modprobe -r ipip`
+
+## remove docker0
+`ip link delete docker0`
+
