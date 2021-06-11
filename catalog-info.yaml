@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: 2019_VVD
+  annotations:
+    github.com/project-slug: vuvandang1995/2019_VVD
+spec:
+  type: other
+  lifecycle: unknown
+  owner: hi
